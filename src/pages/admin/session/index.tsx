@@ -22,13 +22,10 @@ const CountSession = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box pt={{ base: "90px", md: "90px", xl: "90px" }}>
+    <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
         <title>Count Session || Count Warehouse Manager</title>
-        <meta
-          name="description"
-          content="This is the home page of my Next.js app"
-        />
+        <meta name="description" />
       </Head>
       <Box pt={{ base: "40px", md: "30px", xl: "30px" }}>
         <Flex justifyContent="end">

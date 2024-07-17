@@ -24,6 +24,7 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { useState } from "react";
+import Link from "next/link";
 // import { useHistory } from "react-router-dom";
 import {
   createColumnHelper,
@@ -187,14 +188,12 @@ export default function SessionTable(props: { tableData: any }) {
       ),
       cell: (info) => (
         <Flex>
-          <button
+          <Link
+            href={`/admin/session/${info.row.original.id}`}
             className="btn btn-green ml-2"
-            onClick={() => {
-              // history.push(`/session/${info.row.original.id}`);
-            }}
           >
             View
-          </button>
+          </Link>
           <button
             className="btn btn-green ml-2"
             onClick={() => {

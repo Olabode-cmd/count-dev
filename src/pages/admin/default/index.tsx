@@ -10,15 +10,14 @@ import Head from "next/head";
 const MainDashboard = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   return (
-    <Box pt={{ base: "90px", md: "90px", xl: "90px" }}>
+    <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
         <title>Dashboard || Count Warehouse Manager</title>
         <meta
           name="description"
-          content="This is the home page of my Next.js app"
         />
       </Head>
-      
+
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 4, "2xl": 6 }}
         gap="20px"
