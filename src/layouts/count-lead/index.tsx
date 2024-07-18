@@ -7,16 +7,16 @@ import { SidebarContext } from "@/contexts/SidebarContext";
 import routes from "../routes";
 import filterRoutesByLayout from "../filterRoutes";
 
-const AdminLayout = ({ children }: { children: ReactNode }) => {
+const CountLeadLayout = ({ children }: { children: ReactNode }) => {
   const { onOpen } = useDisclosure();
   const [toggleSidebar, setToggleSidebar] = useState(false);
 
   // Filter admin routes
-  const adminRoutes = filterRoutesByLayout(routes, "/admin");
+  const countLeadRoutes = filterRoutesByLayout(routes, "/count-lead");
 
   return (
     <SidebarContext.Provider value={{ toggleSidebar, setToggleSidebar }}>
-      <Sidebar routes={adminRoutes} display="none" />
+      <Sidebar routes={countLeadRoutes} display="none" />
       <Box
         float="right"
         minHeight="100vh"
@@ -55,4 +55,4 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default AdminLayout;
+export default CountLeadLayout;

@@ -14,19 +14,9 @@ import MainDashboard from '@/pages';
 import CountSession from '@/pages/admin/session';
 import Warehouse from '@/pages/admin/warehouse';
 import Report from '@/pages/admin/report';
+
+import CountDashboard from '@/pages/count-lead/default';
 import { ReactNode } from 'react';
-// import Warehouse from 'views/admin/warehouse';
-// import CountSession from 'views/admin/session';
-// import SessionDetails from 'views/admin/session/components/sessionDetails';
-// import Report from 'views/admin/report';
-// import Reconciliation from 'views/admin/reconciliation';
-
-// import CountDashboard from 'views/count-lead/default';
-// import CountDataEntry from 'views/count-lead/data-entry';
-// import CountReconciliation from 'views/count-lead/reconciliation';
-
-// Auth Imports
-// import SignInCentered from 'views/auth/signIn';
 
 type RoutesType = {
   roles: string[];
@@ -94,16 +84,16 @@ const routes = [
     layout: "/admin",
     roles: ["admin"],
   },
-  // {
-  //   path: "/default",
-  //   name: "Dashboard",
-  //   icon: (
-  //     <Icon as={MdHome} width="20px" height="20px" mt={1} color="inherit" />
-  //   ),
-  //   component: CountDashboard,
-  //   layout: "/count-lead",
-  //   roles: ["count-lead"],
-  // },
+  {
+    path: "/default",
+    name: "Dashboard",
+    icon: (
+      <Icon as={MdHome} width="20px" height="20px" mt={1} color="inherit" />
+    ),
+    component: CountDashboard,
+    layout: "/count-lead",
+    roles: ["count-lead"],
+  },
   // {
   //   path: "/data-entry",
   //   name: "Data Entry",

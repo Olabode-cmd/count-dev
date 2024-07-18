@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import theme from "../theme/theme";
 import "../styles/globals.css";
 import AdminLayout from "@/layouts/admin";
+import CountLeadLayout from "@/layouts/count-lead";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -14,6 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   if (pathname.startsWith("/admin")) {
     Layout = AdminLayout;
+  } else if (pathname.startsWith("/count-lead")){
+    Layout = CountLeadLayout
   } else {
     Layout = ({ children }: { children: React.ReactNode }) => <>{children}</>;
   }
