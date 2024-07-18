@@ -178,51 +178,51 @@ const ReconTable = (props: { tableData: any }) => {
     // }),
   ];
 
-  if (withBatchDetails) {
-    columns.push(
-      columnHelper.accessor("batchDetails", {
-        id: "batchDetails",
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: "10px", lg: "12px" }}
-            color="gray.400"
-          >
-            BATCH DETAILS
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      })
-    );
-  }
+  // if (withBatchDetails) {
+  //   columns.push(
+  //     columnHelper.accessor("batchDetails", {
+  //       id: "batchDetails",
+  //       header: () => (
+  //         <Text
+  //           justifyContent="space-between"
+  //           align="center"
+  //           fontSize={{ sm: "10px", lg: "12px" }}
+  //           color="gray.400"
+  //         >
+  //           BATCH DETAILS
+  //         </Text>
+  //       ),
+  //       cell: (info) => (
+  //         <Text color={textColor} fontSize="sm" fontWeight="700">
+  //           {info.getValue()}
+  //         </Text>
+  //       ),
+  //     })
+  //   );
+  // }
 
-  if (withLogistics) {
-    columns.push(
-      columnHelper.accessor("logisticsAreaCode", {
-        id: "logisticsAreaCode",
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: "10px", lg: "12px" }}
-            color="gray.400"
-          >
-            LOGISTICS AREA CODE
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      })
-    );
-  }
+  // if (withLogistics) {
+  //   columns.push(
+  //     columnHelper.accessor("logisticsAreaCode", {
+  //       id: "logisticsAreaCode",
+  //       header: () => (
+  //         <Text
+  //           justifyContent="space-between"
+  //           align="center"
+  //           fontSize={{ sm: "10px", lg: "12px" }}
+  //           color="gray.400"
+  //         >
+  //           LOGISTICS AREA CODE
+  //         </Text>
+  //       ),
+  //       cell: (info) => (
+  //         <Text color={textColor} fontSize="sm" fontWeight="700">
+  //           {info.getValue()}
+  //         </Text>
+  //       ),
+  //     })
+  //   );
+  // }
 
   const [data, setData] = React.useState(() => [...defaultData]);
   const table = useReactTable({
@@ -258,15 +258,15 @@ const ReconTable = (props: { tableData: any }) => {
 
       <Flex px="25px">
         <Checkbox
-          isChecked={withBatchDetails}
-          onChange={() => setWithBatchDetails(!withBatchDetails)}
+          // isChecked={withBatchDetails}
+          // onChange={() => setWithBatchDetails(!withBatchDetails)}
         >
           With Batch details
         </Checkbox>
         <Checkbox
           ml="4"
-          isChecked={withLogistics}
-          onChange={() => setWithLogistics(!withLogistics)}
+          // isChecked={withLogistics}
+          // onChange={() => setWithLogistics(!withLogistics)}
         >
           With Logistics
         </Checkbox>
