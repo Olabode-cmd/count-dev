@@ -27,6 +27,7 @@ import {
   getPaginationRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import { EntryType } from "perf_hooks";
 
 type Description = {
   value: string;
@@ -65,7 +66,7 @@ const DataEntry = () => {
     remark: "",
   });
 
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState<any[]>([]);
   const [editingIndex, setEditingIndex] = useState(null);
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
@@ -107,27 +108,26 @@ const DataEntry = () => {
     setEditingIndex(null); // Reset the editing index here as well
   };
 
-
-  const handleEdit = (index: number) => {
-    const entry = entries[index];
-    setFormData({
-      materialNumber: entry.materialNumber,
-      packSize: entry.packSize,
-      cartonSize: entry.cartonSize,
-      storageLocation: entry.storageLocation,
-      unitOfMeasurements: entry.unitOfMeasurements,
-      batchNumber: entry.batchNumber,
-      expiryDate: entry.expiryDate,
-      packQuantity: entry.packQuantity,
-      total: entry.total,
-      remark: entry.remark,
-    });
-    setSelectedDescription(
-      descriptions.find((d) => d.label === entry.description)
-    );
-    setEntries(entries.filter((_, i) => i !== index));
-    setEditingIndex(index);
-  };
+  // const handleEdit = (index: number) => {
+  //   const entry = entries[index];
+  //   setFormData({
+  //     materialNumber: entry.materialNumber,
+  //     packSize: entry.packSize,
+  //     cartonSize: entry.cartonSize,
+  //     storageLocation: entry.storageLocation,
+  //     unitOfMeasurements: entry.unitOfMeasurements,
+  //     batchNumber: entry.batchNumber,
+  //     expiryDate: entry.expiryDate,
+  //     packQuantity: entry.packQuantity,
+  //     total: entry.total,
+  //     remark: entry.remark,
+  //   });
+  //   setSelectedDescription(
+  //     descriptions.find((d) => d.label === entry.description)
+  //   );
+  //   setEntries(entries.filter((_, i) => i !== index));
+  //   setEditingIndex(index);
+  // };
 
   const columnHelper = createColumnHelper();
 
@@ -145,6 +145,7 @@ const DataEntry = () => {
   const [data, setData] = useState(entries);
   const [globalFilter, setGlobalFilter] = useState("");
 
+  // @ts-ignore
   const table = useReactTable({
     data,
     columns,
@@ -259,14 +260,16 @@ const DataEntry = () => {
           </SimpleGrid>
 
           <Flex mt="3">
-            <button onSubmit={handleSubmit} className="btn btn-green">Save</button>
+            <button onSubmit={handleSubmit} className="btn btn-green">
+              Save
+            </button>
           </Flex>
         </form>
       </Card>
 
       <Card mt={4} className="overflow-scroll">
         <Box>
-          <Text fontSize="xl" fontWeight="bold" mb='2'>
+          <Text fontSize="xl" fontWeight="bold" mb="2">
             View data
           </Text>
 
