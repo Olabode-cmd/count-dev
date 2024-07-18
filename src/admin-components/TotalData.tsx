@@ -5,7 +5,7 @@ import Card from '@/components/card/Card';
 // import LineChart from '@/components/charts/LineChart';
 import { MdBarChart, MdOutlineCalendarToday } from 'react-icons/md';
 // Assets
-import { lineChartDataTotalSpent, lineChartOptionsTotalSpent } from '../../../components/variables/charts';
+import { lineChartDataTotalSpent, lineChartOptionsTotalSpent } from '../components/variables/charts';
 
 export default function TotalData(props: { [x: string]: any }) {
 	const { ...rest } = props;

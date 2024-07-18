@@ -9,8 +9,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Card from "@/components/card/Card";
-import ReportTable from "../components/ReportTable";
-import tableReport from "../variables/tableReport";
+import ReportTable from "../../../admin-components/ReportTable";
+import tableReport from "../../../variables/tableReport";
 import Head from "next/head";
 
 export default function Report() {

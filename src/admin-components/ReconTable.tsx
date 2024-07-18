@@ -39,7 +39,7 @@ type RowObj = {
 
 const columnHelper = createColumnHelper<RowObj>();
 
-const ReconTable = (props: { tableData: any }) => {
+export default function ReconTable(props: { tableData: any }) {
   const { tableData } = props;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -327,5 +327,3 @@ const ReconTable = (props: { tableData: any }) => {
     </Card>
   );
 };
-
-export default ReconTable;

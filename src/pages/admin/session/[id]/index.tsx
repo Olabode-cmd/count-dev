@@ -1,6 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import tableSession from "../../variables/tableSessions";
+import tableSession from "../../../../variables/tableSessions";
 import {
   Box,
   Input,
@@ -21,7 +21,7 @@ import {
 import Head from "next/head";
 import { useState } from "react";
 import Card from "@/components/card/Card";
-import Subsession from "../../components/Subsession";
+import Subsession from "../../../../admin-components/Subsession";
 
 interface Session {
   id: number;

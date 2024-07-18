@@ -2,9 +2,9 @@ import { Box, SimpleGrid, Icon, useColorModeValue } from "@chakra-ui/react";
 import MiniStatistics from "@/components/card/MiniStatistics";
 import IconBox from "@/components/icons/IconBox";
 import { MdAddTask, MdBarChart, MdOutlineCardGiftcard, MdSupervisedUserCircle } from "react-icons/md";
-import TotalData from "../components/TotalData";
-import tableRecentStock from "../variables/tableRecentStock";
-import RecentStockCountTable from "../components/RecentStockCountTable";
+import TotalData from "../../../admin-components/TotalData";
+import tableRecentStock from "../../../variables/tableRecentStock";
+import RecentStockCountTable from "../../../admin-components/RecentStockCountTable";
 import Head from "next/head";
 
 const MainDashboard = () => {

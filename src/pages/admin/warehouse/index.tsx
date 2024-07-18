@@ -17,8 +17,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import WarehouseTable from "../components/WarehouseTable";
-import tableWarehouses from "../variables/tableWarehouses";
+import WarehouseTable from "../../../admin-components/WarehouseTable";
+import tableWarehouses from "../../../variables/tableWarehouses";
 
 const Warehouse = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");

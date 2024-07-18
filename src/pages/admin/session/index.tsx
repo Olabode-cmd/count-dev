@@ -15,8 +15,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import SessionTable from "../components/SessionTable";
-import tableSession from "../variables/tableSessions";
+import SessionTable from "../../../admin-components/SessionTable";
+import tableSession from "../../../variables/tableSessions";
 
 const CountSession = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");

@@ -3,8 +3,8 @@ import { useState } from "react";
 import Card from "@/components/card/Card";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import ReconTable from "@/pages/admin/components/ReconTable";
-import tableRecon from "@/pages/admin/variables/tableRecon";
+import ReconTable from "@/admin-components/ReconTable";
+import tableRecon from "@/variables/tableRecon";
 
 export default function Reconciliation() {
     const router = useRouter();
