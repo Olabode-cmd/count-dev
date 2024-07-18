@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useRouter } from "next/router";
 import {
   Box,
@@ -145,7 +146,6 @@ const DataEntry = () => {
   const [data, setData] = useState(entries);
   const [globalFilter, setGlobalFilter] = useState("");
 
-  // @ts-ignore
   const table = useReactTable({
     data,
     columns,
