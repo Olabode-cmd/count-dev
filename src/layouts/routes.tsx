@@ -34,6 +34,7 @@ type RoutesType = {
   layout: string;
   component: ReactNode;
   icon: string;
+  secondary?: boolean;
   path: string;
 };
 
