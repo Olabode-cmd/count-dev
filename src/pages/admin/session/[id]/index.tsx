@@ -238,7 +238,7 @@ const SessionPage = ({ session }: SessionPageProps) => {
                 <option value="option2">Finished goods</option>
               </Select>
 
-              <Select placeholder="Count parameter">
+              <Select placeholder="Parameter in use">
                 <option value="option1">Material Number</option>
                 <option value="option2">Description</option>
               </Select>

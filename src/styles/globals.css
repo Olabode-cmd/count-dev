@@ -13,6 +13,10 @@ body {
   background: #eff7f7 !important;
 }
 
+.overflow-scroll {
+  overflow-x: scroll !important;
+}
+
 option {
   color: black;
 }

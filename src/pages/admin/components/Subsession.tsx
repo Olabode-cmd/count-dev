@@ -32,6 +32,9 @@ export default function Subsession() {
   const handleDataEntry = () => {
     router.push(`/admin/session/${id}/data-entry`);
   };
+  const handleReconciliation = () => {
+    router.push(`/admin/session/${id}/reconciliation`);
+  };
   const {
     isOpen: isOpenEditModal,
     onOpen: onOpenEditModal,
@@ -49,8 +52,8 @@ export default function Subsession() {
           colorScheme="teal"
           variant="outline"
           borderRadius="0px"
-          ml='5'
-          mr='5'
+          ml="5"
+          mr="5"
         >
           Edit
         </Button>
@@ -69,7 +72,10 @@ export default function Subsession() {
             <MenuItem onClick={handleDataEntry} icon={<MdFileCopy />}>
               Start Data Entry
             </MenuItem>
-            <MenuItem icon={<RiVoiceRecognitionLine />}>
+            <MenuItem
+              onClick={handleReconciliation}
+              icon={<RiVoiceRecognitionLine />}
+            >
               Start Reconciliation
             </MenuItem>
             <MenuItem icon={<TiLockClosed />}>Close Session</MenuItem>
@@ -135,7 +141,7 @@ export default function Subsession() {
 
                 <Box>
                   <Text mt="2" mb="1">
-                    Count Parameter
+                    Parameter in use
                   </Text>
                   <Select>
                     <option value="option1">Material Number</option>
