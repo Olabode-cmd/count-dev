@@ -13,12 +13,14 @@ import {
   ModalOverlay,
   useColorModeValue,
   useDisclosure,
+  StackDivider,
+  VStack,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import SessionTable from "../components/SessionTable";
-import tableSession from "../variables/tableSessions";
+import WarehouseTable from "../components/WarehouseTable";
+import tableWarehouses from "../variables/tableWarehouses";
 
-const CountSession = () => {
+const Warehouse = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -30,23 +32,37 @@ const CountSession = () => {
       <Box>
         <Flex justifyContent="end">
           <button className="btn btn-green" onClick={onOpen}>
-            Create Session
+            Add Warehouse
           </button>
 
           <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Create Count Session</ModalHeader>
+              <ModalHeader>Add Warehouse</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                {/* <Lorem count={2} /> */}
-                <Input placeholder="Session name" mb="4" />
-                <Text>Session start date:</Text>
-                <Input type="date" mb="2" />
+                <Text mb="2">
+                  Download the excel template if you don&apos;t already have it,
+                  kindly fill in the appropriate cells and upload warehouse
+                  details.
+                </Text>
+                <Text mb="4">
+                  Be sure to double-check warehouse details before uploading to
+                  avoid errors.
+                </Text>
+                <VStack
+                  divider={<StackDivider borderColor="gray.200" />}
+                  spacing={4}
+                >
+                  <button className="btn btn-green">
+                    Download Excel Template
+                  </button>
+                  <button className="btn btn-alt">Upload Data</button>
+                </VStack>
               </ModalBody>
 
               <ModalFooter>
-                <button className="btn btn-green">Create</button>
+                <button className="btn btn-green">Add</button>
                 <button className="btn btn-ghost" onClick={onClose}>
                   Close
                 </button>
@@ -56,11 +72,11 @@ const CountSession = () => {
         </Flex>
 
         <Box mt="3">
-          <SessionTable tableData={tableSession} />
+          <WarehouseTable tableData={tableWarehouses} />
         </Box>
       </Box>
     </Box>
   );
 };
 
-export default CountSession;
+export default Warehouse;

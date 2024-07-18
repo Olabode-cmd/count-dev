@@ -12,7 +12,8 @@ import {
 // Admin Imports
 import MainDashboard from '@/pages';
 import CountSession from '@/pages/admin/session';
-
+import Warehouse from '@/pages/admin/warehouse';
+import Report from '@/pages/admin/report';
 import { ReactNode } from 'react';
 // import Warehouse from 'views/admin/warehouse';
 // import CountSession from 'views/admin/session';
@@ -63,54 +64,38 @@ const routes = [
     layout: "/admin",
     roles: ["admin"],
   },
-  // {
-  //   path: "/reconciliation",
-  //   name: "Reconciliation",
-  //   icon: (
-  //     <Icon
-  //       as={MdBookmarks}
-  //       width="20px"
-  //       height="20px"
-  //       mt={1}
-  //       color="inherit"
-  //     />
-  //   ),
-  //   component: Reconciliation,
-  //   layout: "/admin",
-  //   roles: ["admin"],
-  // },
-  // {
-  //   path: "/warehouse",
-  //   name: "Warehouse",
-  //   icon: (
-  //     <Icon
-  //       as={MdWarehouse}
-  //       width="20px"
-  //       height="20px"
-  //       mt={1}
-  //       color="inherit"
-  //     />
-  //   ),
-  //   component: Warehouse,
-  //   layout: "/admin",
-  //   roles: ["admin"],
-  // },
-  // {
-  //   path: "/report",
-  //   name: "Report",
-  //   icon: (
-  //     <Icon
-  //       as={MdOutlineFileCopy}
-  //       width="20px"
-  //       height="20px"
-  //       mt={1}
-  //       color="inherit"
-  //     />
-  //   ),
-  //   component: Report,
-  //   layout: "/admin",
-  //   roles: ["admin"],
-  // },
+  {
+    path: "/warehouse",
+    name: "Warehouse",
+    icon: (
+      <Icon
+        as={MdWarehouse}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: Warehouse,
+    layout: "/admin",
+    roles: ["admin"],
+  },
+  {
+    path: "/report",
+    name: "Report",
+    icon: (
+      <Icon
+        as={MdOutlineFileCopy}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: Report,
+    layout: "/admin",
+    roles: ["admin"],
+  },
   // {
   //   path: "/default",
   //   name: "Dashboard",
