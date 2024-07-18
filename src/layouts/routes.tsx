@@ -32,8 +32,8 @@ type RoutesType = {
   roles: string[];
   name: string;
   layout: string;
-  component: ReactNode;
-  icon: string;
+  icon?: React.ReactNode;
+  component: React.ElementType;
   secondary?: boolean;
   path: string;
 };
@@ -58,8 +58,7 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit"
-      />
+        color="inherit" />
     ),
     component: CountSession,
     layout: "/admin",
@@ -74,8 +73,7 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit"
-      />
+        color="inherit" />
     ),
     component: Warehouse,
     layout: "/admin",
@@ -90,8 +88,7 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit"
-      />
+        color="inherit" />
     ),
     component: Report,
     layout: "/admin",

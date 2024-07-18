@@ -4,7 +4,7 @@ import { Box, useDisclosure, Portal } from "@chakra-ui/react";
 import Navbar from "@/components/navbar/NavbarAdmin";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { SidebarContext } from "@/contexts/SidebarContext";
-import routes from "../routes"; // Adjust the path to your routes
+import routes from "../routes";
 
 const AdminLayout = ({ children }: { children: ReactNode }) => {
   const { onOpen } = useDisclosure();
