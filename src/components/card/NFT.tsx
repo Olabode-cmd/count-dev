@@ -27,6 +27,7 @@ export default function NFT(props: {
 						w={{ base: '100%', '3xl': '100%' }}
 						h={{ base: '100%', '3xl': '100%' }}
 						borderRadius='20px'
+						alt='Logo'
 					/>
 					<Button
 						position='absolute'

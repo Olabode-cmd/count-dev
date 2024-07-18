@@ -1,12 +1,10 @@
-// pages/_app.tsx
-import { ChakraProvider } from "@chakra-ui/react";
+/* eslint-disable react/display-name */
 import { AppProps } from "next/app";
+import { ChakraProvider } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import theme from "../theme/theme";
+import "../styles/globals.css";
 import AdminLayout from "@/layouts/admin";
-// import CountLeadLayout from "@/components/layouts/CountLeadLayout";
-import theme from "../../src/theme/theme";
-import { ReactNode } from "react";
-import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -17,7 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (pathname.startsWith("/admin")) {
     Layout = AdminLayout;
   } else {
-    Layout = ({ children }: { children: ReactNode }) => <>{children}</>;
+    Layout = ({ children }: { children: React.ReactNode }) => <>{children}</>;
   }
 
   return (
@@ -28,5 +26,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     </ChakraProvider>
   );
 }
+
+// Add display name for debugging purposes
+MyApp.displayName = "MyApp";
 
 export default MyApp;
