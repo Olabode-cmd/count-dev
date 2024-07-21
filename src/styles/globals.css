@@ -27,6 +27,16 @@ option {
   font-size: .9rem;
   display: inline-block;
 }
+.btn-text {
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-text.green {
+  color: var(--color-green);
+}
+.btn-text.red {
+  color: rgb(150, 22, 22);
+}
 
 .btn-green {
   background: linear-gradient(to right, #000 50%, #015e63 50%);
@@ -37,6 +47,15 @@ option {
 }
 .btn-green:hover {
   background-position: left;
+}
+
+.btn-red {
+  background: rgb(172, 8, 8);
+  color:#fff;
+  transition: .3s;
+}
+.btn-red:hover {
+  background: rgb(121, 5, 5);
 }
 
 .btn-ghost {

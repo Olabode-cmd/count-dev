@@ -50,7 +50,24 @@ export default function Subsession() {
     isOpen: isOpenEditModal,
     onOpen: onOpenEditModal,
     onClose: onCloseEditModal,
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenRecon,
+    onOpen: onOpenRecon,
+    onClose: onCloseRecon,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenFinalize,
+    onOpen: onOpenFinalize,
+    onClose: onCloseFinalize,
   } = useDisclosure();
 
   const warehouses: Warehouse[] = [
@@ -102,7 +119,7 @@ export default function Subsession() {
           Edit
         </Button>
 
-        <Box mr='3'>
+        <Box mr="3">
           <Status status="Ongoing" />
         </Box>
         <Menu>
@@ -120,9 +137,13 @@ export default function Subsession() {
             <MenuItem onClick={handleDataEntry} icon={<MdFileCopy />}>
               Start Data Entry
             </MenuItem>
-            <MenuItem icon={<MdPlayArrow />}>Open Reconciliation</MenuItem>
-            <MenuItem icon={<TiLockClosed />}>Close Session</MenuItem>
-            <MenuItem color="red" icon={<FaTrash />}>
+            <MenuItem icon={<MdPlayArrow />} onClick={onOpenRecon}>
+              Open Reconciliation
+            </MenuItem>
+            <MenuItem icon={<TiLockClosed />} onClick={onOpenFinalize}>
+              Finalize Subsession
+            </MenuItem>
+            <MenuItem color="red" icon={<FaTrash />} onClick={onOpenDelete}>
               Delete
             </MenuItem>
           </MenuList>
@@ -205,6 +226,80 @@ export default function Subsession() {
               Close
             </button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenDelete} onClose={onCloseDelete}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Are you sure you want to delete <br /> this session?
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseDelete}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-red ml-2">
+                    Yes, delete session
+                  </button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenRecon} onClose={onCloseRecon}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Open reconciliation for <br /> this subsession?
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseRecon}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-green ml-2">Yes, open it</button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenFinalize} onClose={onCloseFinalize}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Do you want to finalize this subsession?
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseFinalize}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-green ml-2">Yes, do it</button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Box>

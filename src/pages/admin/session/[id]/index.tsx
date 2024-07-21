@@ -69,6 +69,13 @@ const SessionPage = ({ session }: SessionPageProps) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useDisclosure();
 
+  const {
+    isOpen: isOpenFinalize,
+    onOpen: onOpenFinalize,
+    onClose: onCloseFinalize,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [sessions, setSessions] = useState<number[]>([0]);
 
@@ -137,18 +144,26 @@ const SessionPage = ({ session }: SessionPageProps) => {
 
       <Card>
         <Flex alignItems="center">
-          <Text fontSize="2xl" fontWeight="bold" mr='3'>
+          <Text fontSize="2xl" fontWeight="bold" mr="3">
             {session.name}
           </Text>
           <Status status={session.status} />
         </Flex>
         <Text>Session Start Date: {session.date}</Text>
 
-        <Box mt="3">
-          <button className="btn btn-green" onClick={onOpenConfigModal}>
-            View Config Data
-          </button>
-        </Box>
+        <Flex>
+          <Box mt="3">
+            <button className="btn btn-green" onClick={onOpenConfigModal}>
+              View Config Data
+            </button>
+          </Box>
+
+          <Box mt="3">
+            <button className="btn btn-alt ml-2" onClick={onOpenFinalize}>
+              Finalize Session
+            </button>
+          </Box>
+        </Flex>
       </Card>
 
       <Card mt="3">
@@ -267,6 +282,30 @@ const SessionPage = ({ session }: SessionPageProps) => {
               Close
             </button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenFinalize} onClose={onCloseFinalize}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Do you want to finalize this session? Proceeding will close every subsession within.
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseFinalize}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-green ml-2">Yes, do it</button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Box>

@@ -78,60 +78,7 @@ const DataEntry = () => {
     }
   };
 
-  const [formData, setFormData] = useState({
-    materialNumber: "",
-    packSize: "",
-    cartonSize: "22",
-    storageLocation: "",
-    unitOfMeasurements: "Pack",
-    batchNumber: "",
-    expiryDate: "",
-    packQuantity: "",
-    total: "30",
-    remark: "",
-  });
 
-  const [entries, setEntries] = useState<any[]>([]);
-  const [editingIndex, setEditingIndex] = useState(null);
-
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-    const entryData = {
-      ...formData,
-      description: selectedDescription ? selectedDescription.label : "",
-    };
-    if (editingIndex !== null) {
-      const updatedEntries = entries.map((entry, index) =>
-        index === editingIndex ? entryData : entry
-      );
-      setEntries(updatedEntries);
-      setEditingIndex(null); // Reset the editing index
-    } else {
-      setEntries([...entries, entryData]);
-    }
-    setFormData({
-      materialNumber: "",
-      packSize: "",
-      cartonSize: "22",
-      storageLocation: "",
-      unitOfMeasurements: "Pack",
-      batchNumber: "",
-      expiryDate: "",
-      packQuantity: "",
-      total: "30",
-      remark: "",
-    });
-    setSelectedDescription(null);
-    setEditingIndex(null); // Reset the editing index here as well
-  };
 
   // const handleEdit = (index: number) => {
   //   const entry = entries[index];
@@ -156,32 +103,69 @@ const DataEntry = () => {
 
   const columnHelper = createColumnHelper();
 
-  const columns = [
-    columnHelper.accessor("description", { header: "Description" }),
-    columnHelper.accessor("materialNumber", { header: "Material Number" }),
-    columnHelper.accessor("packSize", { header: "Pack Size" }),
-    columnHelper.accessor("storageLocation", { header: "Storage Location" }),
-    columnHelper.accessor("batchNumber", { header: "Batch Number" }),
-    columnHelper.accessor("expiryDate", { header: "Expiry Date" }),
-    columnHelper.accessor("packQuantity", { header: "Pack Quantity" }),
-    columnHelper.accessor("cartonQuantity", { header: "Carton Quantity" }),
-    columnHelper.accessor("remark", { header: "Remark" }),
-  ];
+  const defaultValues = {
+    materialNumber: "MAT677112",
+    packSize: "",
+    cartonSize: "22",
+    unitOfMeasurements: "Pack",
+    batchNumber: "",
+    expiryDate: "",
+    packQuantity: "",
+    cartonQuantity: "",
+    total: "30",
+    remark: "",
+  };
 
-  const [data, setData] = useState(entries);
+  const [formData, setFormData] = useState(defaultValues);
+  const [tableData, setTableData] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editIndex !== null) {
+      const updatedData = [...tableData];
+      updatedData[editIndex] = formData;
+      setTableData(updatedData);
+      setEditIndex(null);
+    } else {
+      setTableData([...tableData, formData]);
+    }
+    setFormData(defaultValues);
+  };
+
+  const handleEdit = (index) => {
+    setFormData(tableData[index]);
+    setEditIndex(index);
+  };
+
+  const handleDelete = (index) => {
+    const updatedData = tableData.filter((_, i) => i !== index);
+    setTableData(updatedData);
+  };
+
+
+  // const [data, setData] = useState(entries);
   const [globalFilter, setGlobalFilter] = useState("");
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      globalFilter,
-    },
-    onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  // const table = useReactTable({
+  //   data,
+  //   columns,
+  //   state: {
+  //     globalFilter,
+  //   },
+  //   onGlobalFilterChange: setGlobalFilter,
+  //   getCoreRowModel: getCoreRowModel(),
+  //   getFilteredRowModel: getFilteredRowModel(),
+  //   getPaginationRowModel: getPaginationRowModel(),
+  // });
 
   const [isReconVisible, setIsReconVisible] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -236,7 +220,7 @@ const DataEntry = () => {
                 name="materialNumber"
                 value={formData.materialNumber}
                 onChange={handleChange}
-                placeholder="MAT677112"
+                // placeholder="MAT677112"
                 readOnly
               />
             </FormControl>
@@ -285,7 +269,7 @@ const DataEntry = () => {
                 name="expiryDate"
                 value={formData.expiryDate}
                 onChange={handleChange}
-                type='date'
+                type="date"
               />
             </FormControl>
             <FormControl>
@@ -319,7 +303,7 @@ const DataEntry = () => {
           </SimpleGrid>
 
           <Flex mt="3">
-            <button onSubmit={handleSubmit} className="btn btn-green">
+            <button className="btn btn-green" type="submit">
               Save
             </button>
           </Flex>
@@ -332,82 +316,53 @@ const DataEntry = () => {
             <Text fontSize="xl" fontWeight="bold" mb="2">
               View data
             </Text>
-
-            <Input
-              value={globalFilter ?? ""}
-              onChange={(e) => setGlobalFilter(e.target.value)}
-              placeholder="Search..."
-              mb={4}
-              width={{ base: "100%", md: "25%" }}
-            />
             <Table>
               <Thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <Tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <Th key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                      </Th>
-                    ))}
-                  </Tr>
-                ))}
+                <Tr>
+                  <Th>Material Number</Th>
+                  <Th>Pack Size</Th>
+                  <Th>Carton Size</Th>
+                  <Th>Unit of Measurements</Th>
+                  <Th>Batch Number</Th>
+                  <Th>Expiry Date</Th>
+                  <Th>Pack Quantity</Th>
+                  <Th>Carton Quantity</Th>
+                  <Th>Total</Th>
+                  <Th>Remark</Th>
+                  <Th>Actions</Th>
+                </Tr>
               </Thead>
               <Tbody>
-                {table.getRowModel().rows.map((row) => (
-                  <Tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <Td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </Td>
-                    ))}
+                {tableData.map((data, index) => (
+                  <Tr key={index}>
+                    <Td>{data.materialNumber}</Td>
+                    <Td>{data.packSize}</Td>
+                    <Td>{data.cartonSize}</Td>
+                    <Td>{data.unitOfMeasurements}</Td>
+                    <Td>{data.batchNumber}</Td>
+                    <Td>{data.expiryDate}</Td>
+                    <Td>{data.packQuantity}</Td>
+                    <Td>{data.cartonQuantity}</Td>
+                    <Td>{data.total}</Td>
+                    <Td>{data.remark}</Td>
+                    <Td>
+                      <button className='btn btn-text green' onClick={() => handleEdit(index)}>Edit</button>
+                      <button className="btn btn-text red" onClick={() => handleDelete(index)}>
+                        Delete
+                      </button>
+                    </Td>
                   </Tr>
                 ))}
               </Tbody>
             </Table>
-            <Flex mt={4} alignItems="center">
-              <button
-                className="btn btn-green"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
-                Previous
-              </button>
-              <button
-                className="btn btn-green ml-2 mr-2"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
-                Next
-              </button>
-              <span>
-                Page {table.getState().pagination.pageIndex + 1} of{" "}
-                {table.getPageCount()}
-              </span>
-              {/* <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => {
-                table.setPageSize(Number(e.target.value));
-              }}
-            >
-              {[10, 20, 30, 40, 50].map((pageSize) => (
-                <option key={pageSize} value={pageSize}>
-                  Show {pageSize}
-                </option>
-              ))}
-            </select> */}
-            </Flex>
           </Box>
         </Card>
       )}
 
       {isReconVisible && (
-        <Box mt='3'><ReconTable tableData={tableRecon} /></Box>
+        <Box mt="3">
+          <ReconTable tableData={tableRecon} />
+        </Box>
       )}
     </Box>
   );

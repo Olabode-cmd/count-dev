@@ -20,7 +20,14 @@ import tableSession from "../../../variables/tableSessions";
 
 const CountSession = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenCountSession,
+    onOpen: onOpenCountSession,
+    onClose: onCloseCountSession,
+  } = useDisclosure();
+  
+
+  
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
@@ -29,11 +36,11 @@ const CountSession = () => {
       </Head>
       <Box>
         <Flex justifyContent="end">
-          <button className="btn btn-green" onClick={onOpen}>
+          <button className="btn btn-green" onClick={onOpenCountSession}>
             Create Session
           </button>
 
-          <Modal isOpen={isOpen} onClose={onClose}>
+          <Modal isOpen={isOpenCountSession} onClose={onCloseCountSession}>
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Create Count Session</ModalHeader>
@@ -47,7 +54,7 @@ const CountSession = () => {
 
               <ModalFooter>
                 <button className="btn btn-green">Create</button>
-                <button className="btn btn-ghost" onClick={onClose}>
+                <button className="btn btn-ghost" onClick={onCloseCountSession}>
                   Close
                 </button>
               </ModalFooter>
