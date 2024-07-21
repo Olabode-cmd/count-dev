@@ -30,7 +30,9 @@ function SidebarContent(props: { routes: RoutesType[] }) {
               <h2>
                 <AccordionButton>
                   <Box as="span" flex="1" textAlign="left">
-                    STOCK COUNT
+                    <Text fontSize="sm" fontWeight="bold">
+                      STOCK COUNT
+                    </Text>
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
@@ -44,7 +46,9 @@ function SidebarContent(props: { routes: RoutesType[] }) {
               <h2>
                 <AccordionButton>
                   <Box as="span" flex="1" textAlign="left">
-                    INBOUND
+                    <Text fontSize="sm" fontWeight="bold">
+                      INBOUND
+                    </Text>
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
@@ -56,7 +60,9 @@ function SidebarContent(props: { routes: RoutesType[] }) {
               <h2>
                 <AccordionButton>
                   <Box as="span" flex="1" textAlign="left">
-                    OUTBOUND
+                    <Text fontSize="sm" fontWeight="bold">
+                      OUTBOUND
+                    </Text>
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>
@@ -68,7 +74,9 @@ function SidebarContent(props: { routes: RoutesType[] }) {
               <h2>
                 <AccordionButton>
                   <Box as="span" flex="1" textAlign="left">
-                    CUSTOMER DEMAND
+                    <Text fontSize="sm" fontWeight="bold">
+                      CUSTOMER DEMAND
+                    </Text>
                   </Box>
                   <AccordionIcon />
                 </AccordionButton>

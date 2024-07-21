@@ -12,19 +12,30 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
+  Select as ChakraSelect,
   SimpleGrid,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import { MdFileCopy } from "react-icons/md";
+import { MdFileCopy, MdPlayArrow } from "react-icons/md";
 import { TbDotsVertical } from "react-icons/tb";
 import { useRouter } from "next/router";
 import { TiLockClosed } from "react-icons/ti";
-import { RiVoiceRecognitionLine } from "react-icons/ri";
+import Select, { SingleValue } from "react-select";
+import Status from "@/components/status/Status";
+
+type Warehouse = {
+  value: string;
+  label: string;
+};
+type CountLead = {
+  value: string;
+  label: string;
+};
 
 export default function Subsession() {
   const router = useRouter();
@@ -42,6 +53,39 @@ export default function Subsession() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useDisclosure();
 
+  const warehouses: Warehouse[] = [
+    { value: "warehouse1", label: "Ojo Warehouse Avenue" },
+    { value: "warehouse2", label: "Ikeja Warehouse Center" },
+    { value: "warehouse3", label: "Iyana-Iba Store Ltd" },
+    { value: "warehouse4", label: "Igando Bar" },
+    { value: "warehouse5", label: "Egbeda Supplements" },
+  ];
+  const countLeads: CountLead[] = [
+    { value: "countLead1", label: "John Doe" },
+    { value: "countLead2", label: "Sasha Doe" },
+    { value: "countLead3", label: "Mary Doe" },
+    { value: "countLead4", label: "Matthew Doe" },
+    { value: "countLead5", label: "Jean Doe" },
+  ];
+
+  const [selectedWarehouse, setSelectedWarehouse] =
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useState<SingleValue<Warehouse>>(null);
+  const [selectedCountLead, setSelectedCountLead] =
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useState<SingleValue<CountLead>>(null);
+
+  const handleSelectChange = (
+    selectedOption: SingleValue<Warehouse | CountLead>,
+    selectType: "warehouse" | "countLead"
+  ) => {
+    if (selectType === "warehouse") {
+      setSelectedWarehouse(selectedOption as SingleValue<Warehouse>);
+    } else if (selectType === "countLead") {
+      setSelectedCountLead(selectedOption as SingleValue<CountLead>);
+    }
+  };
+
   return (
     <Box>
       <Flex alignItems="center">
@@ -57,6 +101,10 @@ export default function Subsession() {
         >
           Edit
         </Button>
+
+        <Box mr='3'>
+          <Status status="Ongoing" />
+        </Box>
         <Menu>
           <MenuButton>
             <Button
@@ -72,12 +120,7 @@ export default function Subsession() {
             <MenuItem onClick={handleDataEntry} icon={<MdFileCopy />}>
               Start Data Entry
             </MenuItem>
-            <MenuItem
-              onClick={handleReconciliation}
-              icon={<RiVoiceRecognitionLine />}
-            >
-              Start Reconciliation
-            </MenuItem>
+            <MenuItem icon={<MdPlayArrow />}>Open Reconciliation</MenuItem>
             <MenuItem icon={<TiLockClosed />}>Close Session</MenuItem>
             <MenuItem color="red" icon={<FaTrash />}>
               Delete
@@ -98,26 +141,28 @@ export default function Subsession() {
                   <Text mt="2" mb="1">
                     Warehouse
                   </Text>
-                  <Select>
-                    <option value="option1" selected>
-                      Ojo Major Stores
-                    </option>
-                    <option value="option2">Ikeja Stores</option>
-                    <option value="option3">Igando Warehouse Branch</option>
-                  </Select>
+                  <Select
+                    options={warehouses}
+                    value={selectedWarehouse}
+                    onChange={(option) =>
+                      handleSelectChange(option, "warehouse")
+                    }
+                    // placeholder=""
+                  />
                 </Box>
 
                 <Box>
                   <Text mt="2" mb="1">
                     Count Lead
                   </Text>
-                  <Select>
-                    <option value="option1">Mr John</option>
-                    <option value="option2">Jane Doe</option>
-                    <option value="option3" selected>
-                      Emily Doe
-                    </option>
-                  </Select>
+                  <Select
+                    options={countLeads}
+                    value={selectedCountLead}
+                    onChange={(option) =>
+                      handleSelectChange(option, "countLead")
+                    }
+                    // placeholder=""
+                  />
                 </Box>
 
                 <Box>
@@ -131,25 +176,25 @@ export default function Subsession() {
                   <Text mt="2" mb="1">
                     Product type
                   </Text>
-                  <Select>
+                  <ChakraSelect>
                     <option value="option1">Raw materials</option>
                     <option value="option2" selected>
                       Finished goods
                     </option>
-                  </Select>
+                  </ChakraSelect>
                 </Box>
 
-                <Box>
+                {/* <Box>
                   <Text mt="2" mb="1">
                     Parameter in use
                   </Text>
-                  <Select>
+                  <ChakraSelect>
                     <option value="option1">Material Number</option>
                     <option value="option2" selected>
                       Description
                     </option>
-                  </Select>
-                </Box>
+                  </ChakraSelect>
+                </Box> */}
               </SimpleGrid>
             </Box>
           </ModalBody>

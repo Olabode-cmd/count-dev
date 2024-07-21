@@ -2,6 +2,7 @@
 import {
   Flex,
   Box,
+  Input,
   Table,
   Tbody,
   Td,
@@ -14,14 +15,16 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import * as React from "react";
+import { useState } from "react";
 import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
   useReactTable,
+  createColumnHelper,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
 } from "@tanstack/react-table";
+import { EntryType } from "perf_hooks";
 import Card from "@/components/card/Card";
 
 type RowObj = {
@@ -35,6 +38,7 @@ type RowObj = {
   countedQuantity: number;
   stockPositionQty: number;
   variance: number;
+  cartonQuantity: number;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
@@ -159,24 +163,42 @@ export default function ReconTable(props: { tableData: any }) {
         </Text>
       ),
     }),
-    // columnHelper.accessor("variance", {
-    //   id: "variance",
-    //   header: () => (
-    //     <Text
-    //       justifyContent="space-between"
-    //       align="center"
-    //       fontSize={{ sm: "10px", lg: "12px" }}
-    //       color="gray.400"
-    //     >
-    //       VARIANCE
-    //     </Text>
-    //   ),
-    //   cell: (info) => (
-    //     <Text color={textColor} fontSize="sm" fontWeight="700">
-    //       {info.getValue()}
-    //     </Text>
-    //   ),
-    // }),
+    columnHelper.accessor("variance", {
+      id: "variance",
+      header: () => (
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: "10px", lg: "12px" }}
+          color="gray.400"
+        >
+          VARIANCE
+        </Text>
+      ),
+      cell: (info) => (
+        <Text color={textColor} fontSize="sm" fontWeight="700">
+          {info.getValue()}
+        </Text>
+      ),
+    }),
+    columnHelper.accessor("variance", {
+      id: "cartonQuantity",
+      header: () => (
+        <Text
+          justifyContent="space-between"
+          align="center"
+          fontSize={{ sm: "10px", lg: "12px" }}
+          color="gray.400"
+        >
+          CARTON QUANTITY
+        </Text>
+      ),
+      cell: (info) => (
+        <Text color={textColor} fontSize="sm" fontWeight="700">
+          {info.getValue()}
+        </Text>
+      ),
+    }),
   ];
 
   if (withBatchDetails) {
@@ -226,16 +248,17 @@ export default function ReconTable(props: { tableData: any }) {
   }
 
   const [data, setData] = React.useState(() => [...defaultData]);
+  const [globalFilter, setGlobalFilter] = useState("");
   const table = useReactTable({
     data,
     columns,
     state: {
-      sorting,
+      globalFilter,
     },
-    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    debugTable: true,
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -256,6 +279,15 @@ export default function ReconTable(props: { tableData: any }) {
         </Text>
         <button className="btn btn-green">Generate report</button>
       </Flex>
+
+      <Input
+        value={globalFilter ?? ""}
+        onChange={(e) => setGlobalFilter(e.target.value)}
+        placeholder="Search..."
+        mb={4}
+        ml='4'
+        width={{ base: "100%", md: "25%" }}
+      />
 
       <Flex px="25px">
         <Checkbox
@@ -323,6 +355,27 @@ export default function ReconTable(props: { tableData: any }) {
             ))}
           </Tbody>
         </Table>
+
+        <Flex mt={4} ml='4' alignItems="center">
+            <button
+              className="btn btn-green"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              Previous
+            </button>
+            <button
+              className="btn btn-green ml-2 mr-2"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              Next
+            </button>
+            <span>
+              Page {table.getState().pagination.pageIndex + 1} of{" "}
+              {table.getPageCount()}
+            </span>
+          </Flex>
       </Box>
     </Card>
   );

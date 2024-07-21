@@ -17,8 +17,8 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import Select, { SingleValue } from "react-select";
 import Card from "@/components/card/Card";
+import Select, { SingleValue } from "react-select";
 import Head from "next/head";
 import {
   useReactTable,
@@ -29,8 +29,15 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import { EntryType } from "perf_hooks";
+import ReconTable from "@/admin-components/ReconTable";
+import tableRecon from "@/variables/tableRecon";
 
 type Description = {
+  value: string;
+  label: string;
+};
+
+type StorageLocation = {
   value: string;
   label: string;
 };
@@ -47,11 +54,28 @@ const DataEntry = () => {
     { value: "description5", label: "Vitamin C Supplements" },
   ];
 
+  const storageLocations: StorageLocation[] = [
+    { value: "storageLocation1", label: "SL001" },
+    { value: "storageLocation2", label: "SL002" },
+    { value: "storageLocation3", label: "SL003" },
+    { value: "storageLocation4", label: "SL004" },
+    { value: "storageLocation5", label: "SL005" },
+  ];
+
   const [selectedDescription, setSelectedDescription] =
     useState<SingleValue<Description>>(null);
+  const [selectedStorageLocation, setSelectedStorageLocation] =
+    useState<SingleValue<StorageLocation>>(null);
 
-  const handleSelectChange = (selectedOption: SingleValue<Description>) => {
-    setSelectedDescription(selectedOption);
+  const handleSelectChange = (
+    selectedOption: SingleValue<Description | StorageLocation>,
+    selectType: "description" | "storageLocation"
+  ) => {
+    if (selectType === "description") {
+      setSelectedDescription(selectedOption as SingleValue<Description>);
+    } else if (selectType === "storageLocation") {
+      setSelectedStorageLocation(selectedOption as SingleValue<StorageLocation>);
+    }
   };
 
   const [formData, setFormData] = useState({
@@ -140,6 +164,7 @@ const DataEntry = () => {
     columnHelper.accessor("batchNumber", { header: "Batch Number" }),
     columnHelper.accessor("expiryDate", { header: "Expiry Date" }),
     columnHelper.accessor("packQuantity", { header: "Pack Quantity" }),
+    columnHelper.accessor("cartonQuantity", { header: "Carton Quantity" }),
     columnHelper.accessor("remark", { header: "Remark" }),
   ];
 
@@ -158,6 +183,14 @@ const DataEntry = () => {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const [isReconVisible, setIsReconVisible] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleReconciliationStart = () => {
+    setIsReconVisible(true);
+    setIsButtonDisabled(true);
+  };
+  
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
@@ -165,7 +198,19 @@ const DataEntry = () => {
         <meta name="description" />
       </Head>
 
-      <Card>
+      <Flex justifyContent="end">
+        <Box>
+          <button
+            className="btn btn-green"
+            onClick={handleReconciliationStart}
+            disabled={isButtonDisabled}
+          >
+            Start Reconciliation
+          </button>
+        </Box>
+      </Flex>
+
+      <Card mt="3">
         <Flex justifyContent="space-between" alignItems="center">
           <Box>
             <Text fontSize="xl" fontWeight="bold">
@@ -181,8 +226,8 @@ const DataEntry = () => {
               <Select
                 options={descriptions}
                 value={selectedDescription}
-                onChange={handleSelectChange}
-                placeholder=""
+                onChange={(option) => handleSelectChange(option, "description")}
+                // placeholder=""
               />
             </FormControl>
             <FormControl>
@@ -191,6 +236,8 @@ const DataEntry = () => {
                 name="materialNumber"
                 value={formData.materialNumber}
                 onChange={handleChange}
+                placeholder="MAT677112"
+                readOnly
               />
             </FormControl>
             <FormControl>
@@ -207,10 +254,13 @@ const DataEntry = () => {
             </FormControl>
             <FormControl>
               <FormLabel>Storage Location</FormLabel>
-              <Input
-                name="storageLocation"
-                value={formData.storageLocation}
-                onChange={handleChange}
+              <Select
+                options={storageLocations}
+                value={selectedStorageLocation}
+                onChange={(option) =>
+                  handleSelectChange(option, "storageLocation")
+                }
+                // placeholder=""
               />
             </FormControl>
             <FormControl>
@@ -235,6 +285,7 @@ const DataEntry = () => {
                 name="expiryDate"
                 value={formData.expiryDate}
                 onChange={handleChange}
+                type='date'
               />
             </FormControl>
             <FormControl>
@@ -242,6 +293,14 @@ const DataEntry = () => {
               <Input
                 name="packQuantity"
                 value={formData.packQuantity}
+                onChange={handleChange}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Carton Quantity</FormLabel>
+              <Input
+                name="cartonQuantity"
+                value={formData.cartonQuantity}
                 onChange={handleChange}
               />
             </FormControl>
@@ -267,69 +326,70 @@ const DataEntry = () => {
         </form>
       </Card>
 
-      <Card mt={4} className="overflow-scroll">
-        <Box>
-          <Text fontSize="xl" fontWeight="bold" mb="2">
-            View data
-          </Text>
+      {!isReconVisible && (
+        <Card mt={4} className="overflow-scroll">
+          <Box>
+            <Text fontSize="xl" fontWeight="bold" mb="2">
+              View data
+            </Text>
 
-          <Input
-            value={globalFilter ?? ""}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder="Search..."
-            mb={4}
-            width={{ base: "100%", md: "25%" }}
-          />
-          <Table>
-            <Thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <Tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <Th key={header.id}>
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                    </Th>
-                  ))}
-                </Tr>
-              ))}
-            </Thead>
-            <Tbody>
-              {table.getRowModel().rows.map((row) => (
-                <Tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <Td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Td>
-                  ))}
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
-          <Flex mt={4} alignItems="center">
-            <button
-              className="btn btn-green"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </button>
-            <button
-              className="btn btn-green ml-2 mr-2"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </button>
-            <span>
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </span>
-            {/* <select
+            <Input
+              value={globalFilter ?? ""}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder="Search..."
+              mb={4}
+              width={{ base: "100%", md: "25%" }}
+            />
+            <Table>
+              <Thead>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <Tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => (
+                      <Th key={header.id}>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </Th>
+                    ))}
+                  </Tr>
+                ))}
+              </Thead>
+              <Tbody>
+                {table.getRowModel().rows.map((row) => (
+                  <Tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <Td key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    ))}
+                  </Tr>
+                ))}
+              </Tbody>
+            </Table>
+            <Flex mt={4} alignItems="center">
+              <button
+                className="btn btn-green"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </button>
+              <button
+                className="btn btn-green ml-2 mr-2"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </button>
+              <span>
+                Page {table.getState().pagination.pageIndex + 1} of{" "}
+                {table.getPageCount()}
+              </span>
+              {/* <select
               value={table.getState().pagination.pageSize}
               onChange={(e) => {
                 table.setPageSize(Number(e.target.value));
@@ -341,9 +401,14 @@ const DataEntry = () => {
                 </option>
               ))}
             </select> */}
-          </Flex>
-        </Box>
-      </Card>
+            </Flex>
+          </Box>
+        </Card>
+      )}
+
+      {isReconVisible && (
+        <Box mt='3'><ReconTable tableData={tableRecon} /></Box>
+      )}
     </Box>
   );
 };

@@ -4,12 +4,11 @@ import tableSession from "../../../../variables/tableSessions";
 import {
   Box,
   Input,
-  Select,
+  Select as ChakraSelect,
   SimpleGrid,
   Text,
   useDisclosure,
   Flex,
-  Tag,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -22,6 +21,8 @@ import Head from "next/head";
 import { useState } from "react";
 import Card from "@/components/card/Card";
 import Subsession from "../../../../admin-components/Subsession";
+import Select, { SingleValue } from "react-select";
+import Status from "@/components/status/Status";
 
 interface Session {
   id: number;
@@ -33,6 +34,15 @@ interface Session {
 interface SessionPageProps {
   session: Session | null;
 }
+
+type Warehouse = {
+  value: string;
+  label: string;
+};
+type CountLead = {
+  value: string;
+  label: string;
+};
 
 const SessionPage = ({ session }: SessionPageProps) => {
   const router = useRouter();
@@ -85,33 +95,38 @@ const SessionPage = ({ session }: SessionPageProps) => {
     document.body.removeChild(link);
   };
 
-  //    Status Tag
-  const status = session.status;
+  const warehouses: Warehouse[] = [
+    { value: "warehouse1", label: "Ojo Warehouse Avenue" },
+    { value: "warehouse2", label: "Ikeja Warehouse Center" },
+    { value: "warehouse3", label: "Iyana-Iba Store Ltd" },
+    { value: "warehouse4", label: "Igando Bar" },
+    { value: "warehouse5", label: "Egbeda Supplements" },
+  ];
+  const countLeads: CountLead[] = [
+    { value: "countLead1", label: "John Doe" },
+    { value: "countLead2", label: "Sasha Doe" },
+    { value: "countLead3", label: "Mary Doe" },
+    { value: "countLead4", label: "Matthew Doe" },
+    { value: "countLead5", label: "Jean Doe" },
+  ];
 
-  let bgColor, textColor;
+  const [selectedWarehouse, setSelectedWarehouse] =
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useState<SingleValue<Warehouse>>(null);
+  const [selectedCountLead, setSelectedCountLead] =
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useState<SingleValue<CountLead>>(null);
 
-  switch (status) {
-    case "Upcoming":
-      bgColor = "#cbdaf5";
-      textColor = "#1156d6";
-      break;
-    case "Ongoing":
-      bgColor = "#d3d3d3";
-      textColor = "#000000";
-      break;
-    case "Closed":
-      bgColor = "#ffe6e6";
-      textColor = "#ff0000";
-      break;
-    case "Completed":
-      bgColor = "#e6ffe7";
-      textColor = "#0ce917";
-      break;
-    default:
-      bgColor = "#ffffff";
-      textColor = "#000000";
-      break;
-  }
+  const handleSelectChange = (
+    selectedOption: SingleValue<Warehouse | CountLead>,
+    selectType: "warehouse" | "countLead"
+  ) => {
+    if (selectType === "warehouse") {
+      setSelectedWarehouse(selectedOption as SingleValue<Warehouse>);
+    } else if (selectType === "countLead") {
+      setSelectedCountLead(selectedOption as SingleValue<CountLead>);
+    }
+  };
 
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
@@ -122,18 +137,10 @@ const SessionPage = ({ session }: SessionPageProps) => {
 
       <Card>
         <Flex alignItems="center">
-          <Text fontSize="2xl" fontWeight="bold">
+          <Text fontSize="2xl" fontWeight="bold" mr='3'>
             {session.name}
           </Text>
-          <Tag
-            bg={bgColor}
-            color={textColor}
-            fontSize="sm"
-            fontWeight="500"
-            ml="3"
-          >
-            {session.status}
-          </Tag>
+          <Status status={session.status} />
         </Flex>
         <Text>Session Start Date: {session.date}</Text>
 
@@ -158,8 +165,8 @@ const SessionPage = ({ session }: SessionPageProps) => {
           </button>
         </Flex>
 
-        <SimpleGrid mt='3' columns={{ base: 1, md: 2 }} spacing={5}>
-            <Subsession />
+        <SimpleGrid mt="3" columns={{ base: 1, md: 2 }} spacing={5}>
+          <Subsession />
         </SimpleGrid>
       </Card>
 
@@ -211,7 +218,11 @@ const SessionPage = ({ session }: SessionPageProps) => {
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={isOpenAddSessionModal} onClose={onCloseAddSessionModal} size='xl'>
+      <Modal
+        isOpen={isOpenAddSessionModal}
+        onClose={onCloseAddSessionModal}
+        size="xl"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Add Subsession</ModalHeader>
@@ -219,35 +230,40 @@ const SessionPage = ({ session }: SessionPageProps) => {
           <ModalBody>
             <SimpleGrid spacing={3} columns={2} mb="3">
               <Input placeholder="Subsession name" size="md" type="text" />
-              <Select placeholder="Select Warehouse">
-                <option value="option1">Ojo Major Stores</option>
-                <option value="option2">Ikeja Stores</option>
-                <option value="option3">Igando Warehouse Branch</option>
-              </Select>
+              <Select
+                options={warehouses}
+                value={selectedWarehouse}
+                onChange={(option) => handleSelectChange(option, "warehouse")}
+                placeholder="Select warehouse"
+              />
 
-              <Select placeholder="Select Count Lead">
-                <option value="option1">Mr John</option>
-                <option value="option2">Jane Doe</option>
-                <option value="option3">Emily Doe</option>
-              </Select>
+              <Select
+                options={countLeads}
+                value={selectedCountLead}
+                onChange={(option) => handleSelectChange(option, "countLead")}
+                placeholder="Select count lead"
+              />
 
               <Input placeholder="Select Date" size="md" type="date" />
 
-              <Select placeholder="Product type">
+              <ChakraSelect placeholder="Product type">
                 <option value="option1">Raw materials</option>
                 <option value="option2">Finished goods</option>
-              </Select>
+              </ChakraSelect>
 
-              <Select placeholder="Parameter in use">
+              {/* <ChakraSelect placeholder="Parameter in use">
                 <option value="option1">Material Number</option>
                 <option value="option2">Description</option>
-              </Select>
+              </ChakraSelect> */}
             </SimpleGrid>
           </ModalBody>
 
           <ModalFooter>
-            <button className='btn btn-green'>Add</button>
-            <button className="btn btn-ghost ml-2" onClick={onCloseAddSessionModal}>
+            <button className="btn btn-green">Add</button>
+            <button
+              className="btn btn-ghost ml-2"
+              onClick={onCloseAddSessionModal}
+            >
               Close
             </button>
           </ModalFooter>

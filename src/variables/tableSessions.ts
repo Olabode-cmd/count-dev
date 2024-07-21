@@ -14,7 +14,7 @@ const tableSession: RowObj[] = [
   },
   {
     name: "March W1 Session",
-    status: "Closed",
+    status: "Ongoing",
     date: "22/06/2023",
     id: 2992,
   },
@@ -26,7 +26,7 @@ const tableSession: RowObj[] = [
   },
   {
     name: "March W2 Sessions",
-    status: "Completed",
+    status: "Upcoming",
     date: "22/06/2023",
     id: 4142,
   },
