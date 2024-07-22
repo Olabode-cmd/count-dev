@@ -23,10 +23,13 @@ import { useState } from "react";
 import Card from "@/components/card/Card";
 import Select, { MultiValue } from "react-select";
 import Counter from "@/count-components/Counters";
+import tableSubsession from "@/variables/tableSubsession";
+import Status from "@/components/status/Status";
 
 interface Session {
   id: number;
   name: string;
+  session: string;
   status: string;
   date: string;
 }
@@ -35,20 +38,20 @@ type Counter = {
   label: string;
 };
 
-interface ViewSessionPageProps {
-  session: Session | null;
-}
-
-const ViewSessionPage = ({ session }: ViewSessionPageProps) => {
+const ViewSessionPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const subsessionID = Number(id);
 
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
+  // Find the subsession with the given ID
+  const subsession = tableSubsession.find((item) => item.id === subsessionID);
 
-  if (!session) {
-    return <div>Session not found</div>;
+  if (!subsession) {
+    return (
+      <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
+        <Text>No subsession found with ID: {id}</Text>
+      </Box>
+    );
   }
 
   const {
@@ -90,34 +93,6 @@ const ViewSessionPage = ({ session }: ViewSessionPageProps) => {
     document.body.removeChild(link);
   };
 
-  //    Status Tag
-  const status = session.status;
-
-  let bgColor, textColor;
-
-  switch (status) {
-    case "Upcoming":
-      bgColor = "#cbdaf5";
-      textColor = "#1156d6";
-      break;
-    case "Ongoing":
-      bgColor = "#d3d3d3";
-      textColor = "#000000";
-      break;
-    case "Closed":
-      bgColor = "#ffe6e6";
-      textColor = "#ff0000";
-      break;
-    case "Completed":
-      bgColor = "#e6ffe7";
-      textColor = "#0ce917";
-      break;
-    default:
-      bgColor = "#ffffff";
-      textColor = "#000000";
-      break;
-  }
-
   const counters: Counter[] = [
     { value: "counter1", label: "SL001" },
     { value: "counter2", label: "SL002" },
@@ -148,29 +123,21 @@ const ViewSessionPage = ({ session }: ViewSessionPageProps) => {
 
       <Card>
         <Flex alignItems="center">
-          <Text fontSize="2xl" fontWeight="bold">
-            {session.name}
+          <Text fontSize="2xl" fontWeight="bold" mr="3">
+            {subsession.name}
           </Text>
-          <Tag
-            bg={bgColor}
-            color={textColor}
-            fontSize="sm"
-            fontWeight="500"
-            ml="3"
-          >
-            {session.status}
-          </Tag>
+          <Status status={subsession.status} />
         </Flex>
-        <Text>Session Start Date: {session.date}</Text>
+
+        <Text mt="3">Main session: {subsession.session}</Text>
+        <Text>Subsession Start Date: {subsession.date}</Text>
 
         <Flex mt="3">
           <button className="btn btn-green" onClick={onOpenConfigModal}>
             View Config Data
           </button>
 
-          <button className="btn btn-green ml-2">
-            Start Data Entry
-          </button>
+          <button className="btn btn-green ml-2">Start Data Entry</button>
         </Flex>
       </Card>
 
@@ -255,6 +222,14 @@ const ViewSessionPage = ({ session }: ViewSessionPageProps) => {
                 </ChakraSelect>
               </Box>
               <Box mt="3">
+                <Text>Alt counter (optional)</Text>
+                <ChakraSelect placeholder="Select alt counter">
+                  <option value="option1">John Doe</option>
+                  <option value="option2">Jane Doe</option>
+                  <option value="option3">Mary Doe</option>
+                </ChakraSelect>
+              </Box>
+              <Box mt="3">
                 <Text>Assign storage location to counter</Text>
                 <Select
                   isMulti
@@ -263,14 +238,6 @@ const ViewSessionPage = ({ session }: ViewSessionPageProps) => {
                   onChange={handleChange}
                   placeholder="Select counters..."
                 />
-              </Box>
-              <Box mt="3">
-                <Text>Alt counter (optional)</Text>
-                <ChakraSelect placeholder="Select alt counter">
-                  <option value="option1">John Doe</option>
-                  <option value="option2">Jane Doe</option>
-                  <option value="option3">Mary Doe</option>
-                </ChakraSelect>
               </Box>
             </ModalBody>
 

@@ -16,6 +16,7 @@ import Warehouse from '@/pages/admin/warehouse';
 import Report from '@/pages/admin/report';
 
 import CountDashboard from '@/pages/count-lead/default';
+import CountLeadSession from '@/pages/count-lead/session';
 import { ReactNode } from 'react';
 
 type RoutesType = {
@@ -48,7 +49,8 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit" />
+        color="inherit"
+      />
     ),
     component: CountSession,
     layout: "/admin",
@@ -63,7 +65,8 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit" />
+        color="inherit"
+      />
     ),
     component: Warehouse,
     layout: "/admin",
@@ -78,7 +81,8 @@ const routes = [
         width="20px"
         height="20px"
         mt={1}
-        color="inherit" />
+        color="inherit"
+      />
     ),
     component: Report,
     layout: "/admin",
@@ -91,6 +95,16 @@ const routes = [
       <Icon as={MdHome} width="20px" height="20px" mt={1} color="inherit" />
     ),
     component: CountDashboard,
+    layout: "/count-lead",
+    roles: ["count-lead"],
+  },
+  {
+    path: "/session",
+    name: "Count Session",
+    icon: (
+      <Icon as={MdAccessTime} width="20px" height="20px" mt={1} color="inherit" />
+    ),
+    component: CountLeadSession,
     layout: "/count-lead",
     roles: ["count-lead"],
   },
