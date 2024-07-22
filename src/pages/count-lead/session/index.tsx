@@ -74,6 +74,7 @@ const CountLeadSession = () => {
         <form onSubmit={showSubsessionResult}>
           <FormControl mb="2">
             <FormLabel>Enter Subsession ID to search</FormLabel>
+            <Text fontSize='sm' mb='1'>(Subsession data are being fetched from json. try 2992 or 4142 to see their data)</Text>
             <Input
               width={{ base: "100%", md: "50%", lg: "50%" }}
               onChange={handleChange}

@@ -17,6 +17,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useState } from "react";
@@ -25,6 +30,9 @@ import Select, { MultiValue } from "react-select";
 import Counter from "@/count-components/Counters";
 import tableSubsession from "@/variables/tableSubsession";
 import Status from "@/components/status/Status";
+import { FaTrash } from "react-icons/fa";
+import { TbDotsVertical } from "react-icons/tb";
+import { MdLock } from "react-icons/md";
 
 interface Session {
   id: number;
@@ -64,6 +72,13 @@ const ViewSessionPage = () => {
     isOpen: isOpenAssignModal,
     onOpen: onOpenAssignModal,
     onClose: onCloseAssignModal,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenFinalize,
+    onOpen: onOpenFinalize,
+    onClose: onCloseFinalize,
     // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useDisclosure();
 
@@ -136,8 +151,6 @@ const ViewSessionPage = () => {
           <button className="btn btn-green" onClick={onOpenConfigModal}>
             View Config Data
           </button>
-
-          <button className="btn btn-green ml-2">Start Data Entry</button>
         </Flex>
       </Card>
 
@@ -155,6 +168,32 @@ const ViewSessionPage = () => {
         <SimpleGrid mt="3" columns={{ base: 1, md: 2 }} spacing={5}>
           <Counter />
         </SimpleGrid>
+      </Card>
+
+      <Card mt="3">
+        <Flex alignItems="center">
+          <Text fontSize="xl" fontWeight="bold">
+            Data Entry:
+          </Text>
+          <button className="btn btn-green ml-2 mr-2">Start Data Entry</button>
+          <Menu>
+            <MenuButton>
+              <Button
+                colorScheme="gray"
+                variant="outline"
+                borderRadius="6px"
+                p="1"
+              >
+                <TbDotsVertical />
+              </Button>
+            </MenuButton>
+            <MenuList>
+              <MenuItem icon={<MdLock />} onClick={onOpenFinalize}>
+                Finalize Subsession
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
       </Card>
 
       <Modal isOpen={isOpenConfigModal} onClose={onCloseConfigModal}>
@@ -214,7 +253,14 @@ const ViewSessionPage = () => {
 
             <ModalBody>
               <Box>
-                <Text>Select counter</Text>
+                <Text mb='3'>Upload mass amount of counters data already assigned to their storage locations.</Text>
+                <Flex mb='3' justifyContent='center'>
+                  <button className='btn btn-alt'>Download Template</button>
+                  <button className='btn btn-green ml-2'>Upload</button>
+                </Flex>
+
+                <hr />
+                <Text mt='3'>Select counter</Text>
                 <ChakraSelect>
                   <option value="option1">John Doe</option>
                   <option value="option2">Jane Doe</option>
@@ -236,8 +282,15 @@ const ViewSessionPage = () => {
                   options={counters}
                   value={selectedCounters}
                   onChange={handleChange}
-                  placeholder="Select counters..."
+                  placeholder="Select storage locations..."
                 />
+              </Box>
+              <Box mt="3">
+                <Text>Parameter in use</Text>
+                <ChakraSelect placeholder="Select parameter for data entry">
+                  <option value="option1">Description</option>
+                  <option value="option2">Material Number</option>
+                </ChakraSelect>
               </Box>
             </ModalBody>
 
@@ -245,6 +298,32 @@ const ViewSessionPage = () => {
               <button className="btn btn-green">Add</button>
             </ModalFooter>
           </Box>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenFinalize} onClose={onCloseFinalize}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Do you want to finalize this subsession? Proceeding will close
+                it and you won&apos;t be allowed to make changes unless reopened
+                by the Warehouse Manager
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseFinalize}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-green ml-2">Yes, do it</button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Box>

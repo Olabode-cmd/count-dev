@@ -40,7 +40,12 @@ export default function Counter() {
     isOpen: isOpenEditModal,
     onOpen: onOpenEditModal,
     onClose: onCloseEditModal,
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
   } = useDisclosure();
 
   const storageLocations: StorageLocation[] = [
@@ -97,7 +102,7 @@ export default function Counter() {
             </Button>
           </MenuButton>
           <MenuList>
-            <MenuItem color="red" icon={<FaTrash />}>
+            <MenuItem onClick={onOpenDelete} color="red" icon={<FaTrash />}>
               Delete
             </MenuItem>
           </MenuList>
@@ -118,7 +123,6 @@ export default function Counter() {
                 value={selectedStorageLocations}
                 onChange={handleChange}
                 defaultValue={defaultOptions}
-                // placeholder="Select counters..."
               />
             </Box>
           </ModalBody>
@@ -129,6 +133,32 @@ export default function Counter() {
               Close
             </button>
           </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenDelete} onClose={onCloseDelete}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Confirm choice</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box textAlign="center">
+              <Text fontSize="lg" mt="2">
+                Are you sure you want to delete <br /> this counter?
+              </Text>
+
+              <Flex mt="5" mb="4" justifyContent="center">
+                <Flex>
+                  <button className="btn btn-alt" onClick={onCloseDelete}>
+                    No, go back
+                  </button>
+                  <button className="btn btn-red ml-2">
+                    Yes, delete counter
+                  </button>
+                </Flex>
+              </Flex>
+            </Box>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Box>
