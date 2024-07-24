@@ -15,7 +15,7 @@ import {
   Checkbox,
 } from "@chakra-ui/react";
 import * as React from "react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   useReactTable,
   createColumnHelper,
@@ -38,7 +38,8 @@ type RowObj = {
   countedQuantity: number;
   stockPositionQty: number;
   variance: number;
-  cartonQuantity: number;
+  expiryDate: string;
+  action: any;
 };
 
 const columnHelper = createColumnHelper<RowObj>();
@@ -54,198 +55,212 @@ export default function ReconTable(props: { tableData: any }) {
   const [withBatchDetails, setWithBatchDetails] = React.useState(false);
   const [withLogistics, setWithLogistics] = React.useState(false);
 
-  const columns = [
-    columnHelper.accessor("productId", {
-      id: "productId",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          PRODUCT ID
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("itemDescription", {
-      id: "itemDescription",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          DESCRIPTION
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("uom", {
-      id: "uom",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          UOM
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("ctnsSize", {
-      id: "ctnsSize",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          CTNS
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("countedQuantity", {
-      id: "countedQuantity",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          COUNTED QUANTITY
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("stockPositionQty", {
-      id: "stockPositionQty",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          STOCK POSITION QUANTITY
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("variance", {
-      id: "variance",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          VARIANCE
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-    columnHelper.accessor("variance", {
-      id: "cartonQuantity",
-      header: () => (
-        <Text
-          justifyContent="space-between"
-          align="center"
-          fontSize={{ sm: "10px", lg: "12px" }}
-          color="gray.400"
-        >
-          CARTON QUANTITY
-        </Text>
-      ),
-      cell: (info) => (
-        <Text color={textColor} fontSize="sm" fontWeight="700">
-          {info.getValue()}
-        </Text>
-      ),
-    }),
-  ];
-
-  if (withBatchDetails) {
-    columns.push(
-      columnHelper.accessor("batchDetails", {
-        id: "batchDetails",
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: "10px", lg: "12px" }}
-            color="gray.400"
-          >
-            BATCH DETAILS
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      })
-    );
-  }
-
-  if (withLogistics) {
-    columns.push(
-      columnHelper.accessor("logisticsAreaCode", {
-        id: "logisticsAreaCode",
-        header: () => (
-          <Text
-            justifyContent="space-between"
-            align="center"
-            fontSize={{ sm: "10px", lg: "12px" }}
-            color="gray.400"
-          >
-            LOGISTICS AREA CODE
-          </Text>
-        ),
-        cell: (info) => (
-          <Text color={textColor} fontSize="sm" fontWeight="700">
-            {info.getValue()}
-          </Text>
-        ),
-      })
-    );
-  }
+  const columns = useMemo(
+    () =>
+      [
+        columnHelper.accessor("productId", {
+          id: "productId",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              PRODUCT ID
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("itemDescription", {
+          id: "itemDescription",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              DESCRIPTION
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("uom", {
+          id: "uom",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              UOM
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("ctnsSize", {
+          id: "ctnsSize",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              CTNS
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("countedQuantity", {
+          id: "countedQuantity",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              COUNTED QUANTITY
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        withBatchDetails &&
+          columnHelper.accessor("batchDetails", {
+            id: "batchDetails",
+            header: () => (
+              <Text
+                justifyContent="space-between"
+                align="center"
+                fontSize={{ sm: "10px", lg: "12px" }}
+                color="gray.400"
+              >
+                BATCH DETAILS
+              </Text>
+            ),
+            cell: (info) => (
+              <Text color={textColor} fontSize="sm" fontWeight="700">
+                {info.getValue()}
+              </Text>
+            ),
+          }),
+        withLogistics &&
+          columnHelper.accessor("logisticsAreaCode", {
+            id: "logisticsAreaCode",
+            header: () => (
+              <Text
+                justifyContent="space-between"
+                align="center"
+                fontSize={{ sm: "10px", lg: "12px" }}
+                color="gray.400"
+              >
+                LOGISTICS AREA CODE
+              </Text>
+            ),
+            cell: (info) => (
+              <Text color={textColor} fontSize="sm" fontWeight="700">
+                {info.getValue()}
+              </Text>
+            ),
+          }),
+        columnHelper.accessor("stockPositionQty", {
+          id: "stockPositionQty",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              STOCK POSITION QUANTITY
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("variance", {
+          id: "variance",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              VARIANCE
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("expiryDate", {
+          id: "expiryDate",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              EXPIRY DATE
+            </Text>
+          ),
+          cell: (info) => (
+            <Text color={textColor} fontSize="sm" fontWeight="700">
+              {info.getValue()}
+            </Text>
+          ),
+        }),
+        columnHelper.accessor("action", {
+          id: "action",
+          header: () => (
+            <Text
+              justifyContent="space-between"
+              align="center"
+              fontSize={{ sm: "10px", lg: "12px" }}
+              color="gray.400"
+            >
+              ACTION
+            </Text>
+          ),
+          cell: () => (
+            <Box>
+              <button className='btn btn-green'>Edit</button>
+            </Box>
+          ),
+        }),
+      ].filter(Boolean),
+    [withBatchDetails, withLogistics, textColor]
+  );
 
   const [data, setData] = React.useState(() => [...defaultData]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -262,12 +277,7 @@ export default function ReconTable(props: { tableData: any }) {
   });
 
   return (
-    <Card
-      flexDirection="column"
-      w="100%"
-      px="0px"
-      overflowX={{ sm: "scroll", lg: "hidden" }}
-    >
+    <Card flexDirection="column" w="100%" px="0px" className="overflow-scroll">
       <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
         <Text
           color={textColor}
@@ -285,7 +295,7 @@ export default function ReconTable(props: { tableData: any }) {
         onChange={(e) => setGlobalFilter(e.target.value)}
         placeholder="Search..."
         mb={4}
-        ml='4'
+        ml="4"
         width={{ base: "100%", md: "25%" }}
       />
 
@@ -296,13 +306,15 @@ export default function ReconTable(props: { tableData: any }) {
         >
           With Batch details
         </Checkbox>
-        <Checkbox
-          ml="4"
-          isChecked={withLogistics}
-          onChange={() => setWithLogistics(!withLogistics)}
-        >
-          With Logistics
-        </Checkbox>
+        {withBatchDetails && (
+          <Checkbox
+            ml="4"
+            isChecked={withLogistics}
+            onChange={() => setWithLogistics(!withLogistics)}
+          >
+            With Logistics
+          </Checkbox>
+        )}
       </Flex>
       <Box>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
@@ -356,26 +368,26 @@ export default function ReconTable(props: { tableData: any }) {
           </Tbody>
         </Table>
 
-        <Flex mt={4} ml='4' alignItems="center">
-            <button
-              className="btn btn-green"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              Previous
-            </button>
-            <button
-              className="btn btn-green ml-2 mr-2"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              Next
-            </button>
-            <span>
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
-            </span>
-          </Flex>
+        <Flex mt={4} ml="4" alignItems="center">
+          <button
+            className="btn btn-green"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </button>
+          <button
+            className="btn btn-green ml-2 mr-2"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </button>
+          <span>
+            Page {table.getState().pagination.pageIndex + 1} of{" "}
+            {table.getPageCount()}
+          </span>
+        </Flex>
       </Box>
     </Card>
   );

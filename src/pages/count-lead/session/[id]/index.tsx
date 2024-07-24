@@ -32,7 +32,7 @@ import tableSubsession from "@/variables/tableSubsession";
 import Status from "@/components/status/Status";
 import { FaTrash } from "react-icons/fa";
 import { TbDotsVertical } from "react-icons/tb";
-import { MdLock } from "react-icons/md";
+import { MdLock, MdPlayArrow } from "react-icons/md";
 
 interface Session {
   id: number;
@@ -49,6 +49,10 @@ type Counter = {
 const ViewSessionPage = () => {
   const router = useRouter();
   const { id } = router.query;
+
+  const handleDataEntry = () => {
+    router.push(`/count-lead/session/${id}/data-entry`);
+  };
   const subsessionID = Number(id);
 
   // Find the subsession with the given ID
@@ -151,6 +155,9 @@ const ViewSessionPage = () => {
           <button className="btn btn-green" onClick={onOpenConfigModal}>
             View Config Data
           </button>
+          <button className="btn btn-alt ml-2" onClick={onOpenFinalize}>
+            Finalize Subsession
+          </button>
         </Flex>
       </Card>
 
@@ -175,7 +182,7 @@ const ViewSessionPage = () => {
           <Text fontSize="xl" fontWeight="bold">
             Data Entry:
           </Text>
-          <button className="btn btn-green ml-2 mr-2">Start Data Entry</button>
+          <button className="btn btn-green ml-2 mr-2" onClick={handleDataEntry}>Start Data Entry</button>
           <Menu>
             <MenuButton>
               <Button
@@ -188,9 +195,7 @@ const ViewSessionPage = () => {
               </Button>
             </MenuButton>
             <MenuList>
-              <MenuItem icon={<MdLock />} onClick={onOpenFinalize}>
-                Finalize Subsession
-              </MenuItem>
+              <MenuItem icon={<MdPlayArrow />}>Open Reconciliation</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
@@ -253,14 +258,17 @@ const ViewSessionPage = () => {
 
             <ModalBody>
               <Box>
-                <Text mb='3'>Upload mass amount of counters data already assigned to their storage locations.</Text>
-                <Flex mb='3' justifyContent='center'>
-                  <button className='btn btn-alt'>Download Template</button>
-                  <button className='btn btn-green ml-2'>Upload</button>
+                <Text mb="3">
+                  Upload mass amount of counters data already assigned to their
+                  storage locations.
+                </Text>
+                <Flex mb="3" justifyContent="center">
+                  <button className="btn btn-alt">Download Template</button>
+                  <button className="btn btn-green ml-2">Upload</button>
                 </Flex>
 
                 <hr />
-                <Text mt='3'>Select counter</Text>
+                <Text mt="3">Select counter</Text>
                 <ChakraSelect>
                   <option value="option1">John Doe</option>
                   <option value="option2">Jane Doe</option>

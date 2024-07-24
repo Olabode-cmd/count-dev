@@ -26,30 +26,21 @@ export default function Report() {
             Report Generation Form
           </Text>
 
+          <Text>Enter Session ID</Text>
+          <Input />
+
+          <Text mt='3'>Choose Subsession (optional)</Text>
+          <Select mb="3">
+            <option value="option1">M1 Subsession</option>
+            <option value="option2">M2 subsession</option>
+            <option value="option3">A1 subsession</option>
+          </Select>
+
           <Text>Report type</Text>
           <Select mb="3">
             <option value="option1">Inventory Accuracy</option>
             <option value="option2">Variance Analysis</option>
             <option value="option3">Aging Analysis</option>
-          </Select>
-
-          <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="3">
-            <Box>
-              <Text>From:</Text>
-              <Input type="date" />
-            </Box>
-
-            <Box>
-              <Text>To:</Text>
-              <Input type="date" />
-            </Box>
-          </SimpleGrid>
-
-          <Text>Warehouse</Text>
-          <Select mb="2">
-            <option value="option1">Pen Avenue Stores</option>
-            <option value="option2">Raven Stores</option>
-            <option value="option3">ICM</option>
           </Select>
 
           <Flex justifyContent="end">

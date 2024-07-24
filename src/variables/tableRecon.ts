@@ -9,7 +9,8 @@ type RowObj = {
   countedQuantity: number;
   stockPositionQty: number;
   variance: number;
-  cartonQuantity: number;
+  expiryDate: string;
+  action: any;
 };
 
 const tableRecon: RowObj[] = [
@@ -24,7 +25,8 @@ const tableRecon: RowObj[] = [
     variance: 5,
     batchDetails: "BAT5564",
     logisticsAreaCode: "SL0001",
-    cartonQuantity: 10
+    expiryDate: "23/04/2024",
+    action: undefined
   },
   {
     productId: "FG-041",
@@ -37,7 +39,8 @@ const tableRecon: RowObj[] = [
     variance: 15,
     batchDetails: "BAT5598",
     logisticsAreaCode: "SL1129",
-    cartonQuantity: 15
+    expiryDate: "24/04/2024",
+    action: undefined
   },
   {
     productId: "FG-041",
@@ -50,7 +53,8 @@ const tableRecon: RowObj[] = [
     variance: 15,
     batchDetails: "BAT5577",
     logisticsAreaCode: "SL6721",
-    cartonQuantity: 10
+    expiryDate: "24/04/2024",
+    action: undefined
   },
   {
     productId: "FG-041",
@@ -63,7 +67,8 @@ const tableRecon: RowObj[] = [
     variance: 15,
     batchDetails: "BAT5514",
     logisticsAreaCode: "SL9951",
-    cartonQuantity: 5
+    expiryDate: "23/04/2024",
+    action: undefined
   },
 ];
 

@@ -13,10 +13,23 @@ import {
   ModalOverlay,
   useColorModeValue,
   useDisclosure,
+  FormControl,
+  FormLabel,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
+  Tfoot,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import SessionTable from "../../../admin-components/SessionTable";
-import tableSession from "../../../variables/tableSessions";
+import tableOneSession from "../../../variables/tableOneSession";
+import Card from "@/components/card/Card";
+import Status from "@/components/status/Status";
 
 const CountSession = () => {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
@@ -25,9 +38,7 @@ const CountSession = () => {
     onOpen: onOpenCountSession,
     onClose: onCloseCountSession,
   } = useDisclosure();
-  
 
-  
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
@@ -62,8 +73,24 @@ const CountSession = () => {
           </Modal>
         </Flex>
 
+        <Card mt="3">
+          <Text fontSize="xl" fontWeight="bold">
+            Search session and subsession IDs
+          </Text>
+
+          <form>
+            <FormControl mb="2">
+              <FormLabel>Enter ID to search</FormLabel>
+              <Input width={{ base: "100%", md: "50%", lg: "50%" }} />
+            </FormControl>
+            <button className="btn btn-green" type="submit">
+              Search
+            </button>
+          </form>
+        </Card>
+
         <Box mt="3">
-          <SessionTable tableData={tableSession} />
+          <SessionTable tableData={tableOneSession} />
         </Box>
       </Box>
     </Box>

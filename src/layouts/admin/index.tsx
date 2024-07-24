@@ -3,6 +3,7 @@ import { ReactNode, useState } from "react";
 import { Box, useDisclosure, Portal } from "@chakra-ui/react";
 import Navbar from "@/components/navbar/NavbarAdmin";
 import Sidebar from "@/components/sidebar/Sidebar";
+import { SidebarResponsive } from "@/components/sidebar/Sidebar";
 import { SidebarContext } from "@/contexts/SidebarContext";
 import routes from "../routes";
 import filterRoutesByLayout from "../filterRoutes";
@@ -17,6 +18,7 @@ const AdminLayout = ({ children }: { children: ReactNode }) => {
   return (
     <SidebarContext.Provider value={{ toggleSidebar, setToggleSidebar }}>
       <Sidebar routes={adminRoutes} display="none" />
+      
       <Box
         float="right"
         minHeight="100vh"
