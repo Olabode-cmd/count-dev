@@ -74,11 +74,11 @@ const DataEntry = () => {
     if (selectType === "description") {
       setSelectedDescription(selectedOption as SingleValue<Description>);
     } else if (selectType === "storageLocation") {
-      setSelectedStorageLocation(selectedOption as SingleValue<StorageLocation>);
+      setSelectedStorageLocation(
+        selectedOption as SingleValue<StorageLocation>
+      );
     }
   };
-
-
 
   // const handleEdit = (index: number) => {
   //   const entry = entries[index];
@@ -151,7 +151,6 @@ const DataEntry = () => {
     setTableData(updatedData);
   };
 
-
   // const [data, setData] = useState(entries);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -174,7 +173,7 @@ const DataEntry = () => {
     setIsReconVisible(true);
     setIsButtonDisabled(true);
   };
-  
+
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
@@ -287,6 +286,7 @@ const DataEntry = () => {
                 name="packQuantity"
                 value={formData.packQuantity}
                 onChange={handleChange}
+                readOnly
               />
             </FormControl>
             <FormControl>

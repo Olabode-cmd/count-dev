@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import tableSession from "../../../../variables/tableSessions";
@@ -26,7 +27,7 @@ import {
 import Head from "next/head";
 import { useState } from "react";
 import Card from "@/components/card/Card";
-import Select, { MultiValue } from "react-select";
+import Select, { MultiValue, SingleValue } from "react-select";
 import Counter from "@/count-components/Counters";
 import tableSubsession from "@/variables/tableSubsession";
 import Status from "@/components/status/Status";
@@ -45,7 +46,14 @@ type Counter = {
   value: string;
   label: string;
 };
-
+type AltCounter = {
+  value: string;
+  label: string;
+};
+type StorageLocation = {
+  value: string;
+  label: string;
+};
 const ViewSessionPage = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -112,25 +120,64 @@ const ViewSessionPage = () => {
     document.body.removeChild(link);
   };
 
-  const counters: Counter[] = [
-    { value: "counter1", label: "SL001" },
-    { value: "counter2", label: "SL002" },
-    { value: "counter3", label: "SL003" },
-    { value: "counter4", label: "SL004" },
-    { value: "counter5", label: "SL005" },
-    { value: "counter6", label: "SL006" },
-    { value: "counter7", label: "SL007" },
-    { value: "counter8", label: "SL008" },
-    { value: "counter9", label: "SL009" },
+  const storageLocation: StorageLocation[] = [
+    { value: "sl1", label: "SL001" },
+    { value: "sl2", label: "SL002" },
+    { value: "sl3", label: "SL003" },
+    { value: "sl4", label: "SL004" },
+    { value: "sl5", label: "SL005" },
+    { value: "sl6", label: "SL006" },
+    { value: "sl7", label: "SL007" },
+    { value: "sl8", label: "SL008" },
+    { value: "sl9", label: "SL009" },
   ];
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [selectedCounters, setSelectedCounters] = useState<MultiValue<Counter>>(
-    []
-  );
+  const [selectedStorageLocation, setSelectedStorageLocation] = useState<
+    MultiValue<StorageLocation>
+  >([]);
 
-  const handleChange = (selectedOptions: MultiValue<Counter>) => {
-    setSelectedCounters(selectedOptions);
+  const handleStorageChange = (selectedOptions: MultiValue<StorageLocation>) => {
+    setSelectedStorageLocation(selectedOptions);
+  };
+
+  const counters: Counter[] = [
+    { value: "counter1", label: "Mary Doe" },
+    { value: "counter2", label: "Sasha Blouse" },
+    { value: "counter3", label: "John Doe" },
+    { value: "counter4", label: "Jane Doe" },
+    { value: "counter5", label: "Angela Brown" },
+    { value: "counter6", label: "Gabi Braun" },
+    { value: "counter7", label: "Trevor Belmont" },
+    { value: "counter8", label: "Vlad Tepes" },
+  ];
+
+  const altcounters: AltCounter[] = [
+    { value: "counter1", label: "Mary Doe" },
+    { value: "counter2", label: "Sasha Blouse" },
+    { value: "counter3", label: "John Doe" },
+    { value: "counter4", label: "Jane Doe" },
+    { value: "counter5", label: "Angela Brown" },
+    { value: "counter6", label: "Gabi Braun" },
+    { value: "counter7", label: "Trevor Belmont" },
+    { value: "counter8", label: "Vlad Tepes" },
+  ];
+
+  const [selectedCounter, setSelectedCounter] =
+    useState<SingleValue<Counter>>(null);
+  const [selectedAltCounter, setSelectedAltCounter] =
+    useState<SingleValue<AltCounter>>(null);
+
+  const handleSelectChange = (
+    selectedOption: SingleValue<Counter | AltCounter>,
+    selectType: "counter" | "altcounter"
+  ) => {
+    if (selectType === "counter") {
+      setSelectedCounter(selectedOption as SingleValue<Counter>);
+    } else if (selectType === "altcounter") {
+      setSelectedAltCounter(
+        selectedOption as SingleValue<AltCounter>
+      );
+    }
   };
 
   return (
@@ -182,7 +229,9 @@ const ViewSessionPage = () => {
           <Text fontSize="xl" fontWeight="bold">
             Data Entry:
           </Text>
-          <button className="btn btn-green ml-2 mr-2" onClick={handleDataEntry}>Start Data Entry</button>
+          <button className="btn btn-green ml-2 mr-2" onClick={handleDataEntry}>
+            Start Data Entry
+          </button>
           <Menu>
             <MenuButton>
               <Button
@@ -269,27 +318,27 @@ const ViewSessionPage = () => {
 
                 <hr />
                 <Text mt="3">Select counter</Text>
-                <ChakraSelect>
-                  <option value="option1">John Doe</option>
-                  <option value="option2">Jane Doe</option>
-                  <option value="option3">Mary Doe</option>
-                </ChakraSelect>
+                <Select
+                  options={counters}
+                  value={selectedCounter}
+                  onChange={(option) => handleSelectChange(option, "counter")}
+                />
               </Box>
               <Box mt="3">
                 <Text>Alt counter (optional)</Text>
-                <ChakraSelect placeholder="Select alt counter">
-                  <option value="option1">John Doe</option>
-                  <option value="option2">Jane Doe</option>
-                  <option value="option3">Mary Doe</option>
-                </ChakraSelect>
+                <Select
+                  options={altcounters}
+                  value={selectedAltCounter}
+                  onChange={(option) => handleSelectChange(option, "altcounter")}
+                />
               </Box>
               <Box mt="3">
                 <Text>Assign storage location to counter</Text>
                 <Select
                   isMulti
-                  options={counters}
-                  value={selectedCounters}
-                  onChange={handleChange}
+                  options={storageLocation}
+                  value={selectedStorageLocation}
+                  onChange={handleStorageChange}
                   placeholder="Select storage locations..."
                 />
               </Box>

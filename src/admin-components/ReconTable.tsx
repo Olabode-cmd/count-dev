@@ -167,6 +167,25 @@ export default function ReconTable(props: { tableData: any }) {
               </Text>
             ),
           }),
+        withBatchDetails &&
+          columnHelper.accessor("expiryDate", {
+            id: "expiryDate",
+            header: () => (
+              <Text
+                justifyContent="space-between"
+                align="center"
+                fontSize={{ sm: "10px", lg: "12px" }}
+                color="gray.400"
+              >
+                EXPIRY DATE
+              </Text>
+            ),
+            cell: (info) => (
+              <Text color={textColor} fontSize="sm" fontWeight="700">
+                {info.getValue()}
+              </Text>
+            ),
+          }),
         withLogistics &&
           columnHelper.accessor("logisticsAreaCode", {
             id: "logisticsAreaCode",
@@ -222,24 +241,6 @@ export default function ReconTable(props: { tableData: any }) {
             </Text>
           ),
         }),
-        columnHelper.accessor("expiryDate", {
-          id: "expiryDate",
-          header: () => (
-            <Text
-              justifyContent="space-between"
-              align="center"
-              fontSize={{ sm: "10px", lg: "12px" }}
-              color="gray.400"
-            >
-              EXPIRY DATE
-            </Text>
-          ),
-          cell: (info) => (
-            <Text color={textColor} fontSize="sm" fontWeight="700">
-              {info.getValue()}
-            </Text>
-          ),
-        }),
         columnHelper.accessor("action", {
           id: "action",
           header: () => (
@@ -254,7 +255,7 @@ export default function ReconTable(props: { tableData: any }) {
           ),
           cell: () => (
             <Box>
-              <button className='btn btn-green'>Edit</button>
+              <button className="btn btn-green">Edit</button>
             </Box>
           ),
         }),
@@ -306,15 +307,13 @@ export default function ReconTable(props: { tableData: any }) {
         >
           With Batch details
         </Checkbox>
-        {withBatchDetails && (
-          <Checkbox
-            ml="4"
-            isChecked={withLogistics}
-            onChange={() => setWithLogistics(!withLogistics)}
-          >
-            With Logistics
-          </Checkbox>
-        )}
+        <Checkbox
+          ml="4"
+          isChecked={withLogistics}
+          onChange={() => setWithLogistics(!withLogistics)}
+        >
+          With Logistics
+        </Checkbox>
       </Flex>
       <Box>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">

@@ -19,13 +19,17 @@ import { ItemContent } from "../menu/ItemContent";
 import { SearchBar } from "./searchBar/SearchBar";
 import { SidebarResponsive } from "../sidebar/Sidebar";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useContext } from "react";
 // Assets
 import navImage from "assets/img/layout/Navbar.png";
 import { MdNotificationsNone, MdInfoOutline } from "react-icons/md";
 import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { FaEthereum } from "react-icons/fa";
 import routes from "@/layouts/routes";
+import filterRoutesByLayout from "@/layouts/filterRoutes";
+import { SidebarContext } from "@/contexts/SidebarContext";
+
+
 export default function HeaderLinks(props: { secondary: boolean }) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
@@ -43,6 +47,11 @@ export default function HeaderLinks(props: { secondary: boolean }) {
     "14px 17px 40px 4px rgba(112, 144, 176, 0.06)"
   );
   const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
+
+  const { layout } = useContext(SidebarContext); // Get the current layout
+
+  const filteredRoutes = filterRoutesByLayout(routes, layout);
+
   return (
     <Flex
       w={{ sm: "100%", md: "auto" }}
@@ -98,7 +107,9 @@ export default function HeaderLinks(props: { secondary: boolean }) {
           </Text>
         </Text>
       </Flex>
-      <SidebarResponsive routes={routes} />
+
+      <SidebarResponsive routes={filteredRoutes} />
+
       <Menu>
         <MenuButton p="0px">
           <Icon

@@ -32,7 +32,8 @@ export function SidebarLinks({ routes }: { routes: RoutesType[] }) {
     return routes.map((route, index) => {
       if (
         route.layout === "/admin" ||
-        route.layout === "/count-lead"
+        route.layout === "/count-lead" ||
+        route.layout === "/counter"
       ) {
         return (
           <Link key={index} href={route.layout + route.path} passHref>

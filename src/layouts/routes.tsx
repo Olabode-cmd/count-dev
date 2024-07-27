@@ -17,6 +17,9 @@ import Report from '@/pages/admin/report';
 
 import CountDashboard from '@/pages/count-lead/default';
 import CountLeadSession from '@/pages/count-lead/session';
+
+import CounterDashboard from '@/pages/counter/default';
+import CounterSession from '@/pages/counter/session';
 import { ReactNode } from 'react';
 
 type RoutesType = {
@@ -102,44 +105,43 @@ const routes = [
     path: "/session",
     name: "Count Session",
     icon: (
-      <Icon as={MdAccessTime} width="20px" height="20px" mt={1} color="inherit" />
+      <Icon
+        as={MdAccessTime}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
     ),
     component: CountLeadSession,
     layout: "/count-lead",
     roles: ["count-lead"],
   },
-  // {
-  //   path: "/data-entry",
-  //   name: "Data Entry",
-  //   icon: (
-  //     <Icon
-  //       as={MdDataSaverOff}
-  //       width="20px"
-  //       height="20px"
-  //       mt={1}
-  //       color="inherit"
-  //     />
-  //   ),
-  //   component: CountDataEntry,
-  //   layout: "/count-lead",
-  //   roles: ["count-lead"],
-  // },
-  // {
-  //   path: "/reconciliation",
-  //   name: "Reconciliation",
-  //   icon: (
-  //     <Icon
-  //       as={MdBookmarks}
-  //       width="20px"
-  //       height="20px"
-  //       mt={1}
-  //       color="inherit"
-  //     />
-  //   ),
-  //   component: CountReconciliation,
-  //   layout: "/count-lead",
-  //   roles: ["count-lead"],
-  // },
+  {
+    path: "/default",
+    name: "Dashboard",
+    icon: (
+      <Icon as={MdHome} width="20px" height="20px" mt={1} color="inherit" />
+    ),
+    component: CounterDashboard,
+    layout: "/counter",
+    roles: ["counter"],
+  },
+  {
+    path: "/session",
+    name: "Count Session",
+    icon: (
+      <Icon
+        as={MdAccessTime}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: CounterSession,
+    layout: "/counter",
+    roles: ["counter"],
+  },
 ];
-
 export default routes;
