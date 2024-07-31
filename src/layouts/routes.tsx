@@ -9,6 +9,8 @@ import {
   MdDataSaverOff,
 } from "react-icons/md";
 
+import { LuJoystick } from 'react-icons/lu';
+
 // Admin Imports
 import MainDashboard from '@/pages';
 import CountSession from '@/pages/admin/session';
@@ -25,7 +27,9 @@ import ControllerDashboard from '@/pages/controller/default';
 import ControllerSession from '@/pages/controller/session';
 import ControllerReport from '@/pages/controller/report';
 import ControllerWarehouse from '@/pages/controller/warehouse';
+
 import { ReactNode } from 'react';
+import Roles from '@/pages/controller/roles';
 
 type RoutesType = {
   roles: string[];
@@ -170,7 +174,7 @@ const routes = [
         color="inherit"
       />
     ),
-    component: CountSession,
+    component: ControllerSession,
     layout: "/controller",
     roles: ["controller"],
   },
@@ -186,7 +190,7 @@ const routes = [
         color="inherit"
       />
     ),
-    component: Warehouse,
+    component: ControllerWarehouse,
     layout: "/controller",
     roles: ["controller"],
   },
@@ -202,7 +206,23 @@ const routes = [
         color="inherit"
       />
     ),
-    component: Report,
+    component: ControllerReport,
+    layout: "/controller",
+    roles: ["controller"],
+  },
+  {
+    path: "/roles",
+    name: "Roles",
+    icon: (
+      <Icon
+        as={LuJoystick}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: Roles,
     layout: "/controller",
     roles: ["controller"],
   },
