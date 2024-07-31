@@ -26,9 +26,10 @@ import {
   PopoverAnchor,
 } from "@chakra-ui/react";
 import Head from "next/head";
-import SessionTable from "../../../admin-components/SessionTable";
+import SessionTable from "../../../controller-components/SessionTable";
 import tableOneSession from "../../../variables/tableOneSession";
 import SpotCheckTable from "@/controller-components/SpotCheckTable";
+import tableSpotCheck from "@/variables/tableSpotCheck";
 import Card from "@/components/card/Card";
 
 const ControllerSession = () => {

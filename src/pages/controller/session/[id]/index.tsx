@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import tableSession from "../../../../variables/tableSessions";
+import tableSpotCheck from "@/variables/tableSpotCheck";
 import {
   Box,
   Input,
