@@ -188,7 +188,7 @@ export default function SpotCheckTable(props: { tableData: any }) {
       cell: (info) => (
         <Flex>
           <Link
-            href={`/admin/session/${info.row.original.id}`}
+            href={`/controller/session/${info.row.original.id}`}
             className="btn btn-green ml-2"
           >
             View
@@ -379,39 +379,7 @@ export default function SpotCheckTable(props: { tableData: any }) {
                     errors.
                   </Text>
                   <hr />
-                  <Text fontWeight="700" mt="2">
-                    Product List
-                  </Text>
 
-                  <Flex justifyContent="center" mt="2" mb="2">
-                    <button
-                      className="btn btn-green"
-                      onClick={() => downloadTemplate("productList")}
-                    >
-                      Download Template
-                    </button>
-                    <input
-                      type="file"
-                      id="productListUpload"
-                      onChange={(e) =>
-                        handleFileUpload(e, setProductListFileName)
-                      }
-                      style={{ display: "none" }}
-                    />
-                    <label
-                      htmlFor="productListUpload"
-                      className="btn btn-alt ml-2"
-                      style={{ cursor: "pointer" }}
-                    >
-                      Upload Data
-                    </label>
-                  </Flex>
-                  {productListFileName && (
-                    <Text className="filename" color="green">
-                      {productListFileName} has been uploaded
-                    </Text>
-                  )}
-                  <hr />
 
                   <Text fontWeight="700" mt="2">
                     Stock position
@@ -441,40 +409,6 @@ export default function SpotCheckTable(props: { tableData: any }) {
                   {stockFileName && (
                     <Text className="filename" color="green">
                       {stockFileName} has been uploaded
-                    </Text>
-                  )}
-                  <hr />
-
-                  <Text fontWeight="700" mt="2">
-                    Batch details
-                  </Text>
-
-                  <Flex justifyContent="center" mt="2" mb="2">
-                    <button
-                      className="btn btn-green"
-                      onClick={() => downloadTemplate("batchDetails")}
-                    >
-                      Download Template
-                    </button>
-                    <input
-                      type="file"
-                      id="batchDetailsUpload"
-                      onChange={(e) =>
-                        handleFileUpload(e, setBatchDetailsFileName)
-                      }
-                      style={{ display: "none" }}
-                    />
-                    <label
-                      htmlFor="batchDetailsUpload"
-                      className="btn btn-alt ml-2"
-                      style={{ cursor: "pointer" }}
-                    >
-                      Upload Data
-                    </label>
-                  </Flex>
-                  {batchDetailsFileName && (
-                    <Text className="filename" color="green">
-                      {batchDetailsFileName} has been uploaded
                     </Text>
                   )}
                   <hr />

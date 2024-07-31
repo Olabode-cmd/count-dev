@@ -135,9 +135,9 @@ const ControllerSession = () => {
           <SessionTable tableData={tableOneSession} />
         </Box>
 
-        {/* <Box mt="3">
+        <Box mt="3">
           <SpotCheckTable tableData={tableOneSession} />
-        </Box> */}
+        </Box>
       </Box>
     </Box>
   );
