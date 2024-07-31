@@ -7,6 +7,7 @@ import "../styles/globals.css";
 import AdminLayout from "@/layouts/admin";
 import CountLeadLayout from "@/layouts/count-lead";
 import CounterLayout from "@/layouts/counter";
+import ControllerLayout from "@/layouts/controller";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -20,6 +21,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     Layout = CountLeadLayout;
   } else if (pathname.startsWith("/counter")) {
     Layout = CounterLayout;
+  } else if (pathname.startsWith("/controller")) {
+    Layout = ControllerLayout;
   } else {
     Layout = ({ children }: { children: React.ReactNode }) => <>{children}</>;
   }

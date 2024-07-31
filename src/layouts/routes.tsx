@@ -20,6 +20,11 @@ import CountLeadSession from '@/pages/count-lead/session';
 
 import CounterDashboard from '@/pages/counter/default';
 import CounterSession from '@/pages/counter/session';
+
+import ControllerDashboard from '@/pages/controller/default';
+import ControllerSession from '@/pages/controller/session';
+import ControllerReport from '@/pages/controller/report';
+import ControllerWarehouse from '@/pages/controller/warehouse';
 import { ReactNode } from 'react';
 
 type RoutesType = {
@@ -143,5 +148,64 @@ const routes = [
     layout: "/counter",
     roles: ["counter"],
   },
+  {
+    path: "/default",
+    name: "Dashboard",
+    icon: (
+      <Icon as={MdHome} width="20px" height="20px" mt={1} color="inherit" />
+    ),
+    component: ControllerDashboard,
+    layout: "/controller",
+    roles: ["controller"],
+  },
+  {
+    path: "/session",
+    name: "Count Session",
+    icon: (
+      <Icon
+        as={MdAccessTime}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: CountSession,
+    layout: "/controller",
+    roles: ["controller"],
+  },
+  {
+    path: "/warehouse",
+    name: "Warehouse",
+    icon: (
+      <Icon
+        as={MdWarehouse}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: Warehouse,
+    layout: "/controller",
+    roles: ["controller"],
+  },
+  {
+    path: "/report",
+    name: "Report",
+    icon: (
+      <Icon
+        as={MdOutlineFileCopy}
+        width="20px"
+        height="20px"
+        mt={1}
+        color="inherit"
+      />
+    ),
+    component: Report,
+    layout: "/controller",
+    roles: ["controller"],
+  },
 ];
+
 export default routes;
