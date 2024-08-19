@@ -34,6 +34,7 @@ import Status from "@/components/status/Status";
 import { FaTrash } from "react-icons/fa";
 import { TbDotsVertical } from "react-icons/tb";
 import { MdLock, MdPlayArrow } from "react-icons/md";
+import SpotCounter from "@/count-components/SpotCounters";
 
 interface Session {
   id: number;
@@ -84,6 +85,13 @@ const ViewSessionPage = () => {
     isOpen: isOpenAssignModal,
     onOpen: onOpenAssignModal,
     onClose: onCloseAssignModal,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenAssignSpotModal,
+    onOpen: onOpenAssignSpotModal,
+    onClose: onCloseAssignSpotModal,
     // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useDisclosure();
 
@@ -227,6 +235,22 @@ const ViewSessionPage = () => {
       <Card mt="3">
         <Flex alignItems="center">
           <Text fontSize="xl" fontWeight="bold">
+            Spot Counters
+          </Text>
+
+          <button className="btn btn-green ml-2" onClick={onOpenAssignSpotModal}>
+            Assign Counters
+          </button>
+        </Flex>
+
+        <SimpleGrid mt="3" columns={{ base: 1, md: 2 }} spacing={5}>
+          <SpotCounter />
+        </SimpleGrid>
+      </Card>
+
+      <Card mt="3">
+        <Flex alignItems="center">
+          <Text fontSize="xl" fontWeight="bold">
             Data Entry:
           </Text>
           <button className="btn btn-green ml-2 mr-2" onClick={handleDataEntry}>
@@ -329,7 +353,9 @@ const ViewSessionPage = () => {
                 <Select
                   options={altcounters}
                   value={selectedAltCounter}
-                  onChange={(option) => handleSelectChange(option, "altcounter")}
+                  onChange={(option) =>
+                    handleSelectChange(option, "altcounter")
+                  }
                 />
               </Box>
               <Box mt="3">
@@ -348,6 +374,61 @@ const ViewSessionPage = () => {
                   <option value="option1">Description</option>
                   <option value="option2">Material Number</option>
                 </ChakraSelect>
+              </Box>
+            </ModalBody>
+
+            <ModalFooter>
+              <button className="btn btn-green">Add</button>
+            </ModalFooter>
+          </Box>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenAssignSpotModal} onClose={onCloseAssignSpotModal}>
+        <ModalOverlay />
+        <ModalContent>
+          <Box>
+            <ModalHeader>Assign Counters</ModalHeader>
+            <ModalCloseButton />
+
+            <ModalBody>
+              <Box>
+                <Text mb="3">
+                  Upload mass amount of counters data already assigned to their
+                  storage locations.
+                </Text>
+                <Flex mb="3" justifyContent="center">
+                  <button className="btn btn-alt">Download Template</button>
+                  <button className="btn btn-green ml-2">Upload</button>
+                </Flex>
+
+                <hr />
+                <Text mt="3">Select counter</Text>
+                <Select
+                  options={counters}
+                  value={selectedCounter}
+                  onChange={(option) => handleSelectChange(option, "counter")}
+                />
+              </Box>
+              <Box mt="3">
+                <Text>Alt counter (optional)</Text>
+                <Select
+                  options={altcounters}
+                  value={selectedAltCounter}
+                  onChange={(option) =>
+                    handleSelectChange(option, "altcounter")
+                  }
+                />
+              </Box>
+              <Box mt="3">
+                <Text>Assign product to counter</Text>
+                <Select
+                  isMulti
+                  options={storageLocation}
+                  value={selectedStorageLocation}
+                  onChange={handleStorageChange}
+                  placeholder="Select products..."
+                />
               </Box>
             </ModalBody>
 

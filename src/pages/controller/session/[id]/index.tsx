@@ -22,6 +22,7 @@ import Head from "next/head";
 import { useState } from "react";
 import Card from "@/components/card/Card";
 import Subsession from "../../../../admin-components/Subsession";
+import SpotSubsession from "@/admin-components/SpotSubsession";
 import Select, { SingleValue } from "react-select";
 import Status from "@/components/status/Status";
 
@@ -67,6 +68,20 @@ const SessionPage = ({ session }: SessionPageProps) => {
     isOpen: isOpenAddSessionModal,
     onOpen: onOpenAddSessionModal,
     onClose: onCloseAddSessionModal,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenSpotCheckModal,
+    onOpen: onOpenSpotCheckModal,
+    onClose: onCloseSpotCheckModal,
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenSpotSessionModal,
+    onOpen: onOpenSpotSessionModal,
+    onClose: onCloseSpotSessionModal,
     // eslint-disable-next-line react-hooks/rules-of-hooks
   } = useDisclosure();
 
@@ -186,6 +201,32 @@ const SessionPage = ({ session }: SessionPageProps) => {
         </SimpleGrid>
       </Card>
 
+      <Card mt="3">
+        <Flex alignItems="center">
+          <Text fontSize="xl" fontWeight="bold">
+            Spot check -
+          </Text>
+
+          <button
+            className="btn btn-green ml-2"
+            onClick={onOpenSpotCheckModal}
+          >
+            Add Subsession
+          </button>
+
+          {/* <button
+            className="btn btn-green ml-2"
+            onClick={onOpenSpotSessionModal}
+          >
+            Add line item
+          </button> */}
+        </Flex>
+
+        <SimpleGrid mt="3" columns={{ base: 1, md: 2 }} spacing={5}>
+          <SpotSubsession />
+        </SimpleGrid>
+      </Card>
+
       <Modal isOpen={isOpenConfigModal} onClose={onCloseConfigModal}>
         <ModalOverlay />
         <ModalContent>
@@ -286,6 +327,102 @@ const SessionPage = ({ session }: SessionPageProps) => {
         </ModalContent>
       </Modal>
 
+      <Modal
+        isOpen={isOpenSpotCheckModal}
+        onClose={onCloseSpotCheckModal}
+        size="xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Subsession</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <SimpleGrid spacing={3} columns={2} mb="3">
+              <Input placeholder="Subsession name" size="md" type="text" />
+              <Select
+                options={warehouses}
+                value={selectedWarehouse}
+                onChange={(option) => handleSelectChange(option, "warehouse")}
+                placeholder="Select warehouse"
+              />
+
+              <Select
+                options={countLeads}
+                value={selectedCountLead}
+                onChange={(option) => handleSelectChange(option, "countLead")}
+                placeholder="Select count lead"
+              />
+
+              <Input placeholder="Select Date" size="md" type="date" />
+
+              {/* <ChakraSelect placeholder="Product type">
+                <option value="option1">Raw materials</option>
+                <option value="option2">Finished goods</option>
+              </ChakraSelect> */}
+
+  
+            </SimpleGrid>
+          </ModalBody>
+
+          <ModalFooter>
+            <button className="btn btn-green">Add</button>
+            <button
+              className="btn btn-ghost ml-2"
+              onClick={onCloseSpotCheckModal}
+            >
+              Close
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal
+        isOpen={isOpenSpotSessionModal}
+        onClose={onCloseSpotSessionModal}
+        size="xl"
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add line items</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <SimpleGrid spacing={3} columns={2} mb="3">
+              <Input placeholder="Subsession name" size="md" type="text" />
+              <Select
+                options={warehouses}
+                value={selectedWarehouse}
+                onChange={(option) => handleSelectChange(option, "warehouse")}
+                placeholder="Select warehouse"
+              />
+
+              <Select
+                options={countLeads}
+                value={selectedCountLead}
+                onChange={(option) => handleSelectChange(option, "countLead")}
+                placeholder="Select count lead"
+              />
+
+              <Input placeholder="Product name" size="md" type="text" />
+
+              <ChakraSelect placeholder="Product type">
+                <option value="option1">Raw materials</option>
+                <option value="option2">Finished goods</option>
+              </ChakraSelect>
+            </SimpleGrid>
+          </ModalBody>
+
+          <ModalFooter>
+            <button className="btn btn-green">Add</button>
+            <button
+              className="btn btn-ghost ml-2"
+              onClick={onCloseSpotSessionModal}
+            >
+              Close
+            </button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <Modal isOpen={isOpenFinalize} onClose={onCloseFinalize}>
         <ModalOverlay />
         <ModalContent>
@@ -294,7 +431,8 @@ const SessionPage = ({ session }: SessionPageProps) => {
           <ModalBody>
             <Box textAlign="center">
               <Text fontSize="lg" mt="2">
-                Do you want to finalize this session? Proceeding will close every subsession within.
+                Do you want to finalize this session? Proceeding will close
+                every subsession within.
               </Text>
 
               <Flex mt="5" mb="4" justifyContent="center">
