@@ -1,7 +1,32 @@
+// @ts-nocheck
 import { useRouter } from "next/router";
+import Link from "next/link";
+import {
+  Box,
+  Flex,
+  Input,
+  SimpleGrid,
+  Text,
+  FormControl,
+  FormLabel,
+  Button,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import Card from "@/components/card/Card";
-import { Box, Flex, FormControl, FormLabel, Input, SimpleGrid, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import Select, { SingleValue } from "react-select";
 import Head from "next/head";
 import {
@@ -13,6 +38,8 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 import { EntryType } from "perf_hooks";
+import ReconTable from "@/admin-components/ReconTable";
+import tableRecon from "@/variables/tableRecon";
 
 type Description = {
   value: string;
@@ -24,104 +51,114 @@ type StorageLocation = {
   label: string;
 };
 
+interface ItemProps {
+  description: Description;
+  // onNavigate: (value: string) => void;
+}
+
+
 const CountPage = () => {
-    const router = useRouter();
-    const { id } = router.query;
-    
-    const descriptions: Description[] = [
-      { value: "pain-reliever-tablets", label: "Pain Reliever Tablets" },
-      { value: "energy-drink", label: "Energy Drink" },
-      { value: "antibiotic-syrup", label: "Antibiotic Syrup" },
-      { value: "snack-bars", label: "Snack Bars" },
-      { value: "vitamin-c-supplements", label: "Vitamin C Supplements" },
-    ];
+  const router = useRouter();
+  const { id } = router.query;
 
-    const storageLocations: StorageLocation[] = [
-      { value: "storageLocation1", label: "SL001" },
-      { value: "storageLocation2", label: "SL002" },
-      { value: "storageLocation3", label: "SL003" },
-      { value: "storageLocation4", label: "SL004" },
-      { value: "storageLocation5", label: "SL005" },
-    ];
+  const descriptions: Description[] = [
+    { value: "pain-reliever-tablets", label: "Pain Reliever Tablets" },
+    { value: "energy-drink", label: "Energy Drink" },
+    { value: "antibiotic-syrup", label: "Antibiotic Syrup" },
+    { value: "snack-bars", label: "Snack Bars" },
+    { value: "vitamin-c-supplements", label: "Vitamin C Supplements" },
+  ];
 
-    const [selectedDescription, setSelectedDescription] =
-      useState<SingleValue<Description>>(null);
-    const [selectedStorageLocation, setSelectedStorageLocation] =
-      useState<SingleValue<StorageLocation>>(null);
+  const storageLocations: StorageLocation[] = [
+    { value: "storageLocation1", label: "SL001" },
+    { value: "storageLocation2", label: "SL002" },
+    { value: "storageLocation3", label: "SL003" },
+    { value: "storageLocation4", label: "SL004" },
+    { value: "storageLocation5", label: "SL005" },
+  ];
 
-    const handleSelectChange = (
-      selectedOption: SingleValue<Description | StorageLocation>,
-      selectType: "description" | "storageLocation"
-    ) => {
-      if (selectType === "description") {
-        setSelectedDescription(selectedOption as SingleValue<Description>);
-      } else if (selectType === "storageLocation") {
-        setSelectedStorageLocation(
-          selectedOption as SingleValue<StorageLocation>
-        );
-      }
-    };
+  const [selectedDescription, setSelectedDescription] =
+    useState<SingleValue<Description>>(null);
+  const [selectedStorageLocation, setSelectedStorageLocation] =
+    useState<SingleValue<StorageLocation>>(null);
 
-    const columnHelper = createColumnHelper();
+  const handleSelectChange = (
+    selectedOption: SingleValue<Description | StorageLocation>,
+    selectType: "description" | "storageLocation"
+  ) => {
+    if (selectType === "description") {
+      setSelectedDescription(selectedOption as SingleValue<Description>);
+    } else if (selectType === "storageLocation") {
+      setSelectedStorageLocation(
+        selectedOption as SingleValue<StorageLocation>
+      );
+    }
+  };
 
-    const defaultValues = {
-      materialNumber: "MAT677112",
-      packSize: "",
-      cartonSize: "22",
-      unitOfMeasurements: "Pack",
-      batchNumber: "",
-      expiryDate: "",
-      packQuantity: "",
-      cartonQuantity: "",
-      total: "30",
-      remark: "",
-    };
+  const columnHelper = createColumnHelper();
 
-    const [formData, setFormData] = useState(defaultValues);
-    const [tableData, setTableData] = useState([]);
-    const [editIndex, setEditIndex] = useState(null);
+  const defaultValues = {
+    materialNumber: "MAT677112",
+    packSize: "",
+    cartonSize: "22",
+    unitOfMeasurements: "Pack",
+    batchNumber: "",
+    expiryDate: "",
+    packQuantity: "",
+    cartonQuantity: "",
+    total: "30",
+    remark: "",
+  };
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    };
+  const [formData, setFormData] = useState(defaultValues);
+  const [tableData, setTableData] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
 
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if (editIndex !== null) {
-        const updatedData = [...tableData];
-        updatedData[editIndex] = formData;
-        setTableData(updatedData);
-        setEditIndex(null);
-      } else {
-        setTableData([...tableData, formData]);
-      }
-      setFormData(defaultValues);
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-    const handleEdit = (index) => {
-      setFormData(tableData[index]);
-      setEditIndex(index);
-    };
-
-    const handleDelete = (index) => {
-      const updatedData = tableData.filter((_, i) => i !== index);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (editIndex !== null) {
+      const updatedData = [...tableData];
+      updatedData[editIndex] = formData;
       setTableData(updatedData);
-    };
+      setEditIndex(null);
+    } else {
+      setTableData([...tableData, formData]);
+    }
+    setFormData(defaultValues);
+  };
 
-    // const [data, setData] = useState(entries);
-    const [globalFilter, setGlobalFilter] = useState("");
+  const handleEdit = (index) => {
+    setFormData(tableData[index]);
+    setEditIndex(index);
+  };
 
-    const [isReconVisible, setIsReconVisible] = useState(false);
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const handleDelete = (index) => {
+    const updatedData = tableData.filter((_, i) => i !== index);
+    setTableData(updatedData);
+  };
 
-    const handleReconciliationStart = () => {
-      setIsReconVisible(true);
-      setIsButtonDisabled(true);
-    };
+  // const [data, setData] = useState(entries);
+  const [globalFilter, setGlobalFilter] = useState("");
+
+  const [isReconVisible, setIsReconVisible] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleReconciliationStart = () => {
+    setIsReconVisible(true);
+    setIsButtonDisabled(true);
+  };
+
+  // const handleNavigate = (value: string) => {
+  //   router.push(`/controller/spot-session/data-count/count`);
+  // };
 
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
@@ -145,7 +182,6 @@ const CountPage = () => {
                 onChange={(option) =>
                   handleSelectChange(option, "storageLocation")
                 }
-                // placeholder=""
               />
             </FormControl>
             <FormControl>
