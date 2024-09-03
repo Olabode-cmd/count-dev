@@ -235,22 +235,6 @@ const ViewSessionPage = () => {
       <Card mt="3">
         <Flex alignItems="center">
           <Text fontSize="xl" fontWeight="bold">
-            Spot Counters
-          </Text>
-
-          <button className="btn btn-green ml-2" onClick={onOpenAssignSpotModal}>
-            Assign Counters
-          </button>
-        </Flex>
-
-        <SimpleGrid mt="3" columns={{ base: 1, md: 2 }} spacing={5}>
-          <SpotCounter />
-        </SimpleGrid>
-      </Card>
-
-      <Card mt="3">
-        <Flex alignItems="center">
-          <Text fontSize="xl" fontWeight="bold">
             Data Entry:
           </Text>
           <button className="btn btn-green ml-2 mr-2" onClick={handleDataEntry}>

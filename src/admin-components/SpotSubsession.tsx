@@ -41,10 +41,10 @@ export default function SpotSubsession() {
   const router = useRouter();
   const { id } = router.query;
   const handleDataEntry = () => {
-    router.push(`/controller/session/${id}/data-count`);
+    router.push(`/controller/spot-session/${id}/data-count`);
   };
   const handleReconciliation = () => {
-    router.push(`/controller/session/${id}/reconciliation`);
+    router.push(`/controller/spot-session/${id}/reconciliation`);
   };
   const {
     isOpen: isOpenEditModal,

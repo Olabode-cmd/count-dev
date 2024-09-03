@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useRouter } from "next/router";
+import Link from "next/link";
 import {
   Box,
   Flex,
@@ -15,6 +16,14 @@ import {
   Th,
   Thead,
   Tr,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import Card from "@/components/card/Card";
@@ -42,16 +51,35 @@ type StorageLocation = {
   label: string;
 };
 
+interface ItemProps {
+  description: Description;
+  // onNavigate: (value: string) => void;
+}
+
+const Item = ({ label, onOpen }: ItemProps) => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  return (
+  <Flex alignItems="center" justifyContent="space-between">
+    <Text fontSize="lg">{label}:</Text>
+    <Link href={`/controller/spot-session/${id}/data-count/count`}>
+      <button className="btn btn-green">Open Count</button>
+    </Link>
+  </Flex>
+);
+}
+
 const DataCount = () => {
   const router = useRouter();
   const { id } = router.query;
 
   const descriptions: Description[] = [
-    { value: "description1", label: "Pain Reliever Tablets" },
-    { value: "description2", label: "Energy Drink" },
-    { value: "description3", label: "Antibiotic Syrup" },
-    { value: "description4", label: "Snack Bars" },
-    { value: "description5", label: "Vitamin C Supplements" },
+    { value: "pain-reliever-tablets", label: "Pain Reliever Tablets" },
+    { value: "energy-drink", label: "Energy Drink" },
+    { value: "antibiotic-syrup", label: "Antibiotic Syrup" },
+    { value: "snack-bars", label: "Snack Bars" },
+    { value: "vitamin-c-supplements", label: "Vitamin C Supplements" },
   ];
 
   const storageLocations: StorageLocation[] = [
@@ -74,7 +102,9 @@ const DataCount = () => {
     if (selectType === "description") {
       setSelectedDescription(selectedOption as SingleValue<Description>);
     } else if (selectType === "storageLocation") {
-      setSelectedStorageLocation(selectedOption as SingleValue<StorageLocation>);
+      setSelectedStorageLocation(
+        selectedOption as SingleValue<StorageLocation>
+      );
     }
   };
 
@@ -128,7 +158,6 @@ const DataCount = () => {
     setTableData(updatedData);
   };
 
-
   // const [data, setData] = useState(entries);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -139,7 +168,11 @@ const DataCount = () => {
     setIsReconVisible(true);
     setIsButtonDisabled(true);
   };
-  
+
+  // const handleNavigate = (value: string) => {
+  //   router.push(`/controller/spot-session/data-count/count`);
+  // };
+
   return (
     <Box pt={{ base: "90px", md: "80px", xl: "80px" }}>
       <Head>
@@ -168,7 +201,7 @@ const DataCount = () => {
           </Box>
         </Flex>
 
-        <form onSubmit={handleSubmit}>
+        {/* <form onSubmit={handleSubmit}>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={3} mt="3">
             <FormControl>
               <FormLabel>Product</FormLabel>
@@ -222,10 +255,24 @@ const DataCount = () => {
               Save
             </button>
           </Flex>
-        </form>
+        </form> */}
+
+        <Text mt="3" fontWeight="bold" fontSize="lg">
+          Assigned Products
+        </Text>
+
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={5} mt="3">
+          {descriptions.map((description) => (
+            <Item
+              key={description.value}
+              label={description.label}
+              onOpen={() => handleOpen(description.value)}
+            />
+          ))}
+        </SimpleGrid>
       </Card>
 
-      {!isReconVisible && (
+      {/* {!isReconVisible && (
         <Card mt={4} className="overflow-scroll">
           <Box>
             <Text fontSize="xl" fontWeight="bold" mb="2">
@@ -276,7 +323,7 @@ const DataCount = () => {
         <Box mt="3">
           <ReconTable tableData={tableRecon} />
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };

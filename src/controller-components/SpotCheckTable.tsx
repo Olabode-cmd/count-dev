@@ -188,7 +188,7 @@ export default function SpotCheckTable(props: { tableData: any }) {
       cell: (info) => (
         <Flex>
           <Link
-            href={`/controller/session/${info.row.original.id}`}
+            href={`/controller/spot-session/${info.row.original.id}`}
             className="btn btn-green ml-2"
           >
             View
